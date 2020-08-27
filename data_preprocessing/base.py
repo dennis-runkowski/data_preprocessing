@@ -3,6 +3,7 @@
 import json
 import csv
 import logging
+from time import process_time
 from data_preprocessing.utils.config import validate_config
 from data_preprocessing.utils.logger import setup_logging
 from data_preprocessing.steps import fetch
@@ -12,42 +13,49 @@ class DataPreprocess():
     """Load data and format for processing"""
 
     def __init__(self, config, log_level="INFO"):
-        """
-        Pass in the data you want to process
+        """Initialize the DataPreprocessing class.
 
         Args:
             config (obj): Config is a json object
             log_level (str): Set the log level, default is INFO
 
-        Example:
-            config = {
-                "data": {
-                    "data_type": "list",
-                    "batch_size": 10
-                },
-                "steps: {
-
+            Example Usage:
+                config = {
+                    "data_loader": {
+                        "type": "list",
+                        "batch_size": 10
+                    },
+                    "steps: [
+                        {
+                            "name": "normalize_text",
+                            "type": "lowercase",
+                            "log_level": "INFO"
+                        }
+                    ]
                 }
-            }
-            process = DataProcess(config)
-            testing_data = ["list of sentences to clean"]
-            processed_data = []
-            for batch in process.run(testing_data):
-                processed_data.update(batch)
+                process = DataProcess(config)
+                testing_data = ["list of sentences to clean"]
+                processed_data = []
+                for batch in process.run(testing_data):
+                    processed_data.update(batch)
 
         """
         self.log = setup_logging(__name__, log_level)
         self.log.info('Validating Config')
         self.config = validate_config(config, log_level)
-        self.data_loader = fetch(config["data"])
+        self.data_loader = fetch(config["data_loader"])
         self.pipeline_steps = [fetch(s) for s in config.get("steps")]
-        self.batch_size = config["data"]["batch_size"]
+        self.batch_size = config["data_loader"]["batch_size"]
+
+        # Start time
+        self.start_time = process_time()
+        self.items_processed = 0
 
     def process_data(self, data=None):
-        """
-        Process data. Data must be a list of dictionaries with the
-        keys id and data. If data is not passed in, we assume to load from a
-        supported file. The file path needs to be provided in the config.
+        """Process data through the defined pipeline.
+        
+        # TODO - fix list loader to be a true list
+        The Data arg is only used when loading in memory data like a list.
 
         Example:
             data = [
@@ -63,6 +71,7 @@ class DataPreprocess():
             self.log.info("Processing {} items".format(len(data)))
         batch = []
         for item in self.data_loader.process(data):
+            self.items_processed += 1
             self.log.debug("Processing item {} - {}".format(
                 item["id"],
                 item["data"]
@@ -79,9 +88,17 @@ class DataPreprocess():
         if batch:
             yield batch
 
+    def disconnect(self):
+        """Method to call to get the stats of processing."""
+        end_time = process_time()
+        self.log.info("Processing took {a} seconds.".format(
+            a=end_time - self.start_time
+        ))
+        self.log.info("{} items were processed.".format(self.items_processed))
+
     def _process_steps(self, item):
-        """
-        Process data through the defined steps in the config
+        """Process data through the defined steps in the config.
+
         Args:
             item (dict): Item to process through the configured steps
         Returns:
