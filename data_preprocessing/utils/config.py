@@ -1,16 +1,41 @@
-"""Module for config related tasks"""
+"""Module for validating config.
+
+In order to process data a validate config object
+is required. The validate config method ensures all the require steps are
+included and the steps are defined correctly.
+
+    Example Usage:
+
+    config = {
+        "data_loader": {
+            "type": "list",
+            "batch_size": 10
+        },
+        "steps": [
+            {
+                "name": "normalize_text",
+                "type": "lowercase"
+            },
+            {
+                "name": "normalize_text",
+                "type": "remove_stopwords"
+            }
+        ]
+    }
+    config = validate_config(config, log_level="DEBUG")
+"""
 
 import json
 
-
-data_config = {
-    "data": {
-        "name": "data_loader",
-        "type": ["list", "csv"],
-        "batch_size": 0
+# Data Loaders
+DATA_LOADER = {
+    "csv": {
+        "file_path": "str",
+        "columns": {}
     },
+    "list": {}
 }
-permitted_steps = {
+PERMITTED_STEPS = {
     "steps": {
         "normalize_text": {
             "type": [
@@ -28,67 +53,85 @@ permitted_steps = {
     }
 }
 # If you use the key it must run before the value
-step_order = {
+STEP_ORDER = {
     "remove_html": [
         "remove_punctuation",
         "porter_stemmer",
         "lemmatizer"
     ],
 }
-required_pre_steps = {
+REQUIRED_PRE_STEPS = {
     "remove_stopwords": ["lowercase"]
 }
 
 
-def validate_config(config, log_level):
-    """
-    Validate config passed. If there is not a log level
-    for a step use the level passed into this method. Some
-    steps rely on others steps, checks are put in place to
-    raise errors for such case. For example the stopword
-    steps require the lowercase step.
+def validate_config(config, log_level="INFO"):
+    """Validate config passed.
+
+    Ensure all the require steps are included and the steps are defined
+    correctly. The default log_level for each step is set to the value defined
+    in the log_level Arg.
 
     Args:
         config (obj): config object
         log_level (str): log level for each step
+
     Returns:
-        obj if no errors returns config
+        The valid config object is returned. If there are errors, an error is
+        raised.
     """
 
-    # Confirm Required Steps
-    for key, val in data_config.items():
-        if not config.get(key):
-            raise KeyError(
-                "The {} section is missing from config!".format(key)
-            )
-        for sub_key, sub_val in val.items():
-            if not config[key].get(sub_key):
-                raise KeyError(
-                    "{} is missing from the {} section!".format(sub_key, key)
-                )
-            if sub_key == "batch_size":
-                if not isinstance(config[key].get(sub_key), int):
-                    raise TypeError("batch_size must be type int!")
-            elif config[key].get(sub_key) not in sub_val:
-                raise ValueError(
-                    "{} is not a valid option!".format(
-                        config[key].get(sub_key))
-                )
-            elif config[key].get(sub_key) == "csv":
-                if not config[key].get("file_path"):
-                    raise ValueError(
-                        "Csv data loaders require the file_path key!"
-                    )
-                if not config[key].get("columns"):
-                    raise ValueError(
-                        "Please add the columns key, with a dictionary "
-                        " containing the id and data columns. For "
-                        "example {'id': 'id', 'data': 'text_column'}"
-                    )
+    # Check that a data loader is defined and correct
+    check_data_loader = config.get("data_loader")
+    if not check_data_loader:
+        raise KeyError(
+            "You must define a data_loader key to define your data loader!"
+        )
 
-        # Set the log level
-        if not config[key].get("log_level"):
-            config[key]["log_level"] = log_level
+    # Get the data loader type
+    check_data_config = config["data_loader"].get("type")
+    if not check_data_config:
+        raise KeyError("You must define the data loader type!")
+
+    # Check the type is correct
+    if check_data_config not in DATA_LOADER.keys():
+        raise ValueError(
+            "The data loader type {a} is not a supported loader. "
+            "Please use one of the supported loaders {b}.".format(
+                a=check_data_config,
+                b=" ,".join([k for k in DATA_LOADER])
+            )
+        )
+    # Check that the required config is provided for the data loader
+    check_data_type = DATA_LOADER.get(check_data_config)
+    for key, value in check_data_type.items():
+        if not check_data_loader.get(key):
+            raise KeyError(
+                "The key {} is missing for this data loader!".format(key)
+            )
+        config_type = type(value)
+        if not isinstance(check_data_loader.get(key), config_type):
+            raise TypeError(
+                "The value for {a} must be of type {b}".format(
+                    a=key,
+                    b=config_type
+                )
+            )
+
+    # If the batch size is not set, add the default batch size of 10
+    check_data_batch = check_data_loader.get("batch_size")
+    if check_data_batch:
+        if not isinstance(check_data_batch, int):
+            raise TypeError("The batch must be of type int!")
+    else:
+        config["data_loader"]["batch_size"] = 10
+
+    # Set the name key - this is to import the data loader module
+    config["data_loader"]["name"] = "data_loader"
+
+    # Set the log level
+    if not config["data_loader"].get("log_level"):
+        config["data_loader"]["log_level"] = log_level
 
     steps_validated = []
     if config.get("steps"):
@@ -107,13 +150,13 @@ def validate_config(config, log_level):
                 raise KeyError("Please use the keys name or type.")
 
             # Check if the step is valid
-            if not permitted_steps["steps"].get(step_name):
+            if not PERMITTED_STEPS["steps"].get(step_name):
                 raise KeyError(
                     "{} is not a valid step!".format(step_name)
                 )
 
             # Check if the type is valid
-            permitted_type = permitted_steps["steps"][step_name]["type"]
+            permitted_type = PERMITTED_STEPS["steps"][step_name]["type"]
             if step_type not in permitted_type:
                 raise ValueError(
                     "{} is not a valid option in {}!".format(
@@ -139,8 +182,8 @@ def validate_config(config, log_level):
 
             # Check to see if order matters with other steps
             steps_validated.append(step_type)
-            if step_order.get(step_type):
-                for check in step_order.get(step_type):
+            if STEP_ORDER.get(step_type):
+                for check in STEP_ORDER.get(step_type):
                     if check in steps_validated:
                         raise KeyError(
                             "The {} step can not run before the {}"
@@ -150,8 +193,8 @@ def validate_config(config, log_level):
                             )
                         )
             # Check for steps that require other steps
-            if required_pre_steps.get(step_type):
-                for check in required_pre_steps.get(step_type):
+            if REQUIRED_PRE_STEPS.get(step_type):
+                for check in REQUIRED_PRE_STEPS.get(step_type):
                     if check not in steps_validated:
                         raise KeyError(
                             "The {} step requires the {}"

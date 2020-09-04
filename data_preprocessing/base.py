@@ -3,7 +3,9 @@
 import json
 import csv
 import logging
+import queue
 from time import process_time
+import multiprocessing as mp
 from data_preprocessing.utils.config import validate_config
 from data_preprocessing.utils.logger import setup_logging
 from data_preprocessing.steps import fetch
@@ -53,7 +55,7 @@ class DataPreprocess():
 
     def process_data(self, data=None):
         """Process data through the defined pipeline.
-        
+
         # TODO - fix list loader to be a true list
         The Data arg is only used when loading in memory data like a list.
 
@@ -88,6 +90,47 @@ class DataPreprocess():
         if batch:
             yield batch
 
+    def multiprocess_data(self, data=None):
+        """Process data through the defined pipeline.
+
+        # TODO - fix list loader to be a true list
+        The Data arg is only used when loading in memory data like a list.
+
+        Example:
+            data = [
+                {
+                    "id": 1,
+                    "data": "this is a string to process"
+                },
+            ]
+        Args:
+            data (obj): Dictionary with items to process
+        """
+        processes = []
+        self.queue = mp.JoinableQueue()
+        self.kafka_queue = mp.Queue()
+
+        for i in range(4):
+            worker_process = mp.Process(
+                target=self._worker,
+                args=(self.queue, self.kafka_queue),
+                daemon=True,
+                name='worker_process_{}'.format(i)
+            )
+            worker_process.start()
+            processes.append(worker_process)
+        self.log.info([x.name for x in processes])
+        if data:
+            self.log.info("Processing {} items".format(len(data)))
+        for item in self.data_loader.process(data):
+            self.items_processed += 1
+            self.queue.put(item)
+
+        self.queue.join()
+
+        for item in range(0, self.kafka_queue.qsize()):
+            yield self.kafka_queue.get()
+
     def disconnect(self):
         """Method to call to get the stats of processing."""
         end_time = process_time()
@@ -108,3 +151,10 @@ class DataPreprocess():
             item["data"] = step.process(item)
 
         return item
+
+    def _worker(self, queue, kafka_queue):
+        while True:
+            msg = queue.get()
+            msg = self._process_steps(msg)
+            kafka_queue.put(msg)
+            queue.task_done()

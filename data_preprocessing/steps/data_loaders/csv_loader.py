@@ -34,7 +34,7 @@ class CsvDataLoader(Steps):
                     if not item:
                         self.log.warn("Skipping row - {}".format(index))
                         continue
-                    yield item
+                    yield self.item_model(item)
         except Exception as e:
             self.log.error("Error processing csv file")
             raise e

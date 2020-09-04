@@ -16,8 +16,9 @@ class NormalizeLowerCase(Steps):
             str: lowercase text
         """
         try:
-            self.log.debug("Converting to lowercase")
-            return item["data"].lower()
+            item['data'] = item["data"].lower()
+            self.log.debug("Converting to lowercase - {}".format(item['data']))
+            return item['data']
         except Exception as e:
             self.log.error(
                 "Error converting (item id:{}) to lowercase - {}".format(
