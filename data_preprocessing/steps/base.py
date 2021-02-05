@@ -1,4 +1,9 @@
-""" Base Class for all Steps. """
+""" Base Class for all Steps.
+
+Steps are defined with a dictionary. Each step requires a key ('type'). The
+type defines which step to use. Steps are used in the processing pipeline.
+There are data loaders and normalize_text steps.
+"""
 
 import hashlib
 
@@ -6,33 +11,48 @@ from data_preprocessing.utils.logger import setup_logging
 
 
 class Steps:
-    """ Base Steps Class """
-    def __init__(self, config):
-        """Initialize steps base class.
+    """ Base Steps Class.
 
-        Args:
-            config (obj): config for the step
-        """
+    Args:
+        config (obj): config for the step
+    """
+    def __init__(self, config):
+        """Initialize steps base class."""
         self.config = config
         self.log = self._logger()
-        self.log.info("Initializing {} step".format(config['type']))
+        self.log.info("Initializing {} step".format(config.get('type')))
 
     def item_model(self, item):
         """Format each record into a standard item format.
 
-        Each incoming record needs to be uniform. This method gets each item
-        in the standard format for processing. Incoming item must be a dict and
-        have the key data.
+        Each incoming record needs to be converted into the item model. The
+        item model is a dictionary with three keys, id, data and tags.
 
-            Example Usage:
-                record = {"id": 1, "data": "this is a test"}
-                self.item_model(record)
         Args:
             item (dict): Dictionary containing the data
-
         Returns:
-            Uniform dict with the necessary keys
+            dict: Containing the proper item format
+
+        Example:
+            .. code-block::
+
+                from data_preprocessing.steps.base import Steps
+
+                config = {
+                    "name": "normalize_text",
+                    "type": "lowercase",
+                    "log_level": "DEBUG"
+                }
+                step = Steps(config)
+
+                record = "this is a test"
+                record = step.item_model(record)
+                print(record)
         """
+        if isinstance(item, str):
+            item = {
+                "data": item
+            }
         if not isinstance(item, dict):
             self.log.error("Item is not in the correct format")
             return {}
@@ -58,9 +78,8 @@ class Steps:
 
         Args:
             text (str): Text for the item
-
         Returns:
-            str
+            str: Id created from hashing the text
         """
         return hashlib.md5(text.encode("utf-8")).hexdigest()
 
@@ -68,6 +87,6 @@ class Steps:
         """Helper function to setup the logger."""
         log = setup_logging(
             self.config["type"],
-            self.config["log_level"]
+            self.config.get("log_level")
         )
         return log

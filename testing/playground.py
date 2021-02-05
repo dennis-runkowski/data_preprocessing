@@ -7,56 +7,61 @@ from data_preprocessing.base import DataPreprocess
         # "batch_size": 500,
         # "log_level": "DEBUG"
 
+# test_item = [
+#     {
+#         'id': 1,
+#         'data': '''Just in case this is the first time you’ve visited our website Vend is an award winning web based point of sale software for retail. We’re chucking out crusty old cash registers and replacing them with iPads, touch screens and beautiful software, all of this to make life easier for our retailers.  Vend is a fast-growing tech start-up, since launching in 2010 we’ve now got 10,000+ customers and 650 partners all over the world with more than 170 employees shared between our Auckland, Melbourne, Toronto, Berlin, London &amp; San Francisco offices.If you’re familiar with our (and many other SaaS companies) business model you’ll know and understand the importance of building a platform that appeals to a variety of customer shapes and sizes. We’re looking for someone who can build strong and strategic partnerships with our large distribution partnerships across North America.You'll be our master of large scale relationships, helping to deliver absolute excellence to our customer and their customers - bringing delight and ensuring the successful implementation of Vend at scale. You'll know how to get things done with large companies, you'll have multi-layered relationships from top to bottom and your attitude towards the challenges associated with working with such large companies is one of excitement. You get a total kick out of achieving "the impossible" and by helping these companies really change their customers worlds.'''
+#     }
+# ]
 test_item = [
     {
         'id': 1,
-        'data': '''Just in case this is the first time you’ve visited our website Vend is an award winning web based point of sale software for retail. We’re chucking out crusty old cash registers and replacing them with iPads, touch screens and beautiful software, all of this to make life easier for our retailers.  Vend is a fast-growing tech start-up, since launching in 2010 we’ve now got 10,000+ customers and 650 partners all over the world with more than 170 employees shared between our Auckland, Melbourne, Toronto, Berlin, London &amp; San Francisco offices.If you’re familiar with our (and many other SaaS companies) business model you’ll know and understand the importance of building a platform that appeals to a variety of customer shapes and sizes. We’re looking for someone who can build strong and strategic partnerships with our large distribution partnerships across North America.You'll be our master of large scale relationships, helping to deliver absolute excellence to our customer and their customers - bringing delight and ensuring the successful implementation of Vend at scale. You'll know how to get things done with large companies, you'll have multi-layered relationships from top to bottom and your attitude towards the challenges associated with working with such large companies is one of excitement. You get a total kick out of achieving "the impossible" and by helping these companies really change their customers worlds.'''
+        'data': "Just in case this is the first time you’ve visited our website Vend is an award winning web based point of sale software for retail. We’re chucking out crusty old cash registers and replacing them with iPads, touch screens and beautiful software, all of this to make life easier for our retailers.  Vend is a fast-growing tech start-up, since launching in 2010 we’ve now got 10,000+ customers and 650 partners all over the world with more than 170 employees shared between our Auckland, Melbourne, Toronto, Berlin, London &amp; San Francisco offices.If you’re familiar with our (and many other SaaS companies) business model you’ll know and understand the importance of building a platform that appeals to a variety of customer shapes and sizes. We’re looking for someone who can build strong and strategic partnerships with our large distribution partnerships across North America.You'll be our master of large scale relationships, helping to deliver absolute excellence to our customer and their customers - bringing delight and ensuring the successful implementation of Vend at scale. You'll know how to get things done with large companies, you'll "
     }
 ]
 config = {
     "data_loader": {
-        "type": "list",
-        # "file_path": "/home/dennis_ubuntu/GitHub/data_preprocessing/testing/fake_job_postings.csv",
-        # "columns": {"id": "job_id", "data": "description"},
-        "batch_size": 500,
-        "log_level": "DEBUG"
+        "type": "csv",
+        "file_path": "train.csv",
+        "columns": {"id": "id", "data": "text"},
+        "batch_size": 1000,
     },
     "steps": [
         {
             "name": "normalize_text",
             "type": "lowercase",
-            "log_level": "DEBUG"
+            "log_level": "INFO"
+        },
+        {
+            "name": "normalize_text",
+            "type": "remove_whitespace",
+            "log_level": "INFO"
         },
         {
             "name": "normalize_text",
             "type": "remove_digits",
-            "log_level": "DEBUG"
+            "log_level": "INFO"
         },
         {
             "name": "normalize_text",
             "type": "remove_html",
-            "log_level": "DEBUG"
-        },
-        {
-            "name": "normalize_text",
-            "type": "lemmatizer",
-            "log_level": "DEBUG"
+            "log_level": "INFO"
         },
         {
             "name": "normalize_text",
             "type": "remove_punctuation",
-            "log_level": "DEBUG"
+            "log_level": "INFO"
+        },
+        {
+            "name": "normalize_text",
+            "type": "expand_contractions",
+            "log_level": "INFO"
         },
         {
             "name": "normalize_text",
             "type": "remove_stopwords",
             "options": "long_list",
-            "log_level": "DEBUG"
-        },
-        {
-            "name": "normalize_text",
-            "type": "remove_whitespace",
-            "log_level": "DEBUG"
+            "log_level": "INFO"
         }
     ]
 }
@@ -174,21 +179,30 @@ data = [
   }
 ]
 
-processer = DataPreprocess(config, log_level='DEBUG')
-count = 0
-for batch in processer.process_data(test_item):
-    # count = count + len(batch)
-    # print(count)
-    # print("processing")
-    x = batch
-    for i in batch:
-        if i.get('id') == 17876:
-            print(i)
-
-# for batch in processer.multiprocess_data():
+# processer_1 = DataPreprocess(config, log_level='INFO')
+# count = 0
+# for batch in processer_1.process_data():
 #     # count = count + len(batch)
 #     # print(count)
-#     x = batch
+#     # print("processing")
+#     pass
+# processer_1.disconnect()
 
-# print(x[0])
-processer.disconnect()
+
+# print("#######################")
+from time import process_time
+start_time = process_time()
+processer_2 = DataPreprocess(config, log_level='INFO')
+data = []
+for batch in processer_2.multiprocess_data(workers=5):
+    # count = count + len(batch)
+    # print(count)
+    data.append(batch)
+
+processer_2.disconnect()
+end_time = process_time()
+print("Local took {a} seconds.".format(a=end_time - start_time))
+
+print(len(data))
+for i in data:
+    print(i)

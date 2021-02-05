@@ -42,12 +42,16 @@ PERMITTED_STEPS = {
                 "lowercase",
                 "remove_digits",
                 "remove_punctuation",
+                "remove_urls",
                 "remove_stopwords",
                 "remove_whitespace",
                 "expand_contractions",
                 "remove_html",
                 "porter_stemmer",
-                "lemmatizer"
+                "lemmatizer",
+                "debugger_step",
+                "expand_contractions",
+                "custom_normalize",
             ]
         }
     }
@@ -59,9 +63,13 @@ STEP_ORDER = {
         "porter_stemmer",
         "lemmatizer"
     ],
+    "remove_urls": [
+        "remove_punctuation"
+    ],
 }
 REQUIRED_PRE_STEPS = {
-    "remove_stopwords": ["lowercase"]
+    "remove_stopwords": ["lowercase"],
+    "expand_contractions": ["lowercase"]
 }
 
 
@@ -147,7 +155,7 @@ def validate_config(config, log_level="INFO"):
 
             # Check for key errors
             if not step_name or not step_type:
-                raise KeyError("Please use the keys name or type.")
+                raise KeyError("Please include the keys, name and type.")
 
             # Check if the step is valid
             if not PERMITTED_STEPS["steps"].get(step_name):
@@ -179,6 +187,11 @@ def validate_config(config, log_level="INFO"):
                         "custom_list key!"
                     )
                 step["options"] = options
+
+            # Custom Step needs custom_path
+            if step_type == "custom_normalize":
+                if not step.get("custom_module"):
+                    step["custom_module"] = "custom_step"
 
             # Check to see if order matters with other steps
             steps_validated.append(step_type)

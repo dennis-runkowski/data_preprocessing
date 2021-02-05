@@ -1,24 +1,67 @@
-""" Normalize Text - Lower case """
+"""Normalize Text - Lowercase step.
 
+Convert all the text to lowercase form. The config type must be set to
+`lowercase`.
+
+Example:
+    .. code-block::
+
+        from data_preprocessing.base import DataPreprocess
+
+        config = {
+            "data_loader": {
+                "type": "list",
+                "batch_size": 10
+            },
+            "steps": [
+                {
+                    "name": "normalize_text",
+                    "type": "lowercase",
+                    "log_level": "INFO",
+                }
+            ]
+        }
+        process = DataPreprocess(config)
+        data = ["THIS IS A TEST sentence."]
+        for batch in process.process_data(data):
+            print(batch)
+"""
 from data_preprocessing.steps.base import Steps
 
 
 class NormalizeLowerCase(Steps):
+    """Lowercase step class.
+
+    Args:
+        config (json): Json object containing the configuration details
+
+    Example:
+        .. code-block::
+
+            # config for usage
+            config = {
+                "name": "normalize_text",
+                "type": "lowercase",
+                "log_level": "INFO"
+            }
+    """
     def __init__(self, config):
         super().__init__(config)
+        if self.config["type"] != "lowercase":
+            self.log.error("Config type does not match!")
+            raise ValueError("Bad config type value.")
 
     def process(self, item):
-        """
-        Process item - make text lowercase
+        """Process item - Convert item data lowercase.
+
         Args:
             item (dict): item
         Returns:
-            str: lowercase text
+            dict: Returns the updated item
         """
         try:
-            item['data'] = item["data"].lower()
-            self.log.debug("Converting to lowercase - {}".format(item['data']))
-            return item['data']
+            self.log.debug("Lowercase Step")
+            item["data"] = item["data"].lower()
         except Exception as e:
             self.log.error(
                 "Error converting (item id:{}) to lowercase - {}".format(
@@ -26,4 +69,4 @@ class NormalizeLowerCase(Steps):
                     e
                 )
             )
-        return item["data"]
+        return item

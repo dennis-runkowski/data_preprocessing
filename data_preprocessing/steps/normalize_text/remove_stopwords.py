@@ -25,14 +25,14 @@ class RemoveStopWords(Steps):
             str: text with no stop words
         """
         try:
+            self.log.debug("Remove Stop Words Step - using {}".format(
+                    self.config.get("options")
+                )
+            )
             item_text = item["data"].split(' ')
             item_text = [i for i in item_text if i not in self.stop_words]
             item_text = " ".join(item_text)
-            self.log.debug("Removing stop words - using {} - {}".format(
-                    self.config.get("options"),
-                    item_text
-                )
-            )
+
             return item_text
         except Exception as e:
             self.log.error(
