@@ -32,9 +32,6 @@ from data_preprocessing.steps.base import Steps
 class NormalizeLowerCase(Steps):
     """Lowercase step class.
 
-    Args:
-        config (json): Json object containing the configuration details
-
     Example:
         .. code-block::
 
@@ -47,8 +44,8 @@ class NormalizeLowerCase(Steps):
     """
     def __init__(self, config):
         super().__init__(config)
-        if self.config["type"] != "lowercase":
-            self.log.error("Config type does not match!")
+        if self._config["type"] != "lowercase":
+            self._log.error("Config type does not match!")
             raise ValueError("Bad config type value.")
 
     def process(self, item):
@@ -60,10 +57,10 @@ class NormalizeLowerCase(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.debug("Lowercase Step")
+            self._log.debug("Lowercase Step")
             item["data"] = item["data"].lower()
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error converting (item id:{}) to lowercase - {}".format(
                     item["id"],
                     e

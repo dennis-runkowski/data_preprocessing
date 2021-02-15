@@ -1,8 +1,8 @@
 """ Process data from a CSV file.
 
-This data loader fetches data from a csv file, formats the data to the item 
-model and processes through the data preprocessing pipeline. You need to include two
-colums, one for the id and one for the data.
+This data loader fetches data from a csv file, formats the data to the item
+model and processes through the data preprocessing pipeline. You must include
+two columns, one for the id and one for the data.
 
 Example:
     .. code-block::
@@ -76,11 +76,11 @@ class CsvDataLoader(Steps):
         Yields:
             obj: Formatted item containing the id and data
         """
-        path = self.config["file_path"]
-        columns = self.config["columns"]
+        path = self._config["file_path"]
+        columns = self._config["columns"]
         column_names = [columns["id"], columns["data"]]
-        batch_size = self.config["batch_size"]
-        self.log.info(
+        batch_size = self._config["batch_size"]
+        self._log.info(
             "Loading items from csv file - {}".format(
                 path
             )
@@ -92,11 +92,11 @@ class CsvDataLoader(Steps):
                 for index, row in batch.iterrows():
                     item = self._build_item(row, columns)
                     if not item:
-                        self.log.warn("Skipping row - {}".format(index))
+                        self._log.warn("Skipping row - {}".format(index))
                         continue
-                    yield self.item_model(item)
+                    yield self._item_model(item)
         except Exception as e:
-            self.log.error("Error processing csv file")
+            self._log.error("Error processing csv file")
             raise e
 
     def _build_item(self, row, columns):
@@ -120,6 +120,6 @@ class CsvDataLoader(Steps):
                 "data": row[columns["data"]]
             }
         except Exception as e:
-            self.log.warn("Error processing row in csv file {}".format(e))
+            self._log.warn("Error processing row in csv file {}".format(e))
             return ""
         return item

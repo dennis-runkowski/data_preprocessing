@@ -12,13 +12,17 @@ valid_types = {
     "csv": {
         "path": "data_preprocessing.steps.data_loaders.csv_loader",
         "class": "CsvDataLoader"
+    },
+    "single_item": {
+        "path": "data_preprocessing.steps.data_loaders.single_item",
+        "class": "SingleItemLoader"
     }
 }
 
 
-def fetch(config):
-    """
-    Fetch the data_loader based on the config and return the object
+def _fetch(config):
+    """Fetch the data_loader based on the config and return the object.
+
     Args:
         config (obj): Object with config for steps
     Returns:

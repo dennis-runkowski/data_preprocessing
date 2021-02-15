@@ -1,13 +1,13 @@
 """Normalize Text - Remove punctuation
 
-Remove punctuation from a string of text. This step can not run before the steps
-`remove_html` or `remove_urls`.The config type must be set to
+Remove punctuation from a string of text. This step can not run before the
+steps `remove_html` or `remove_urls`.The config type must be set to
 `remove_punctuation`.
 
 Example:
     .. code-block::
 
-        from data_preprocessing.base import DataPreprocess
+        from data_preprocessing import DataPreprocess
 
         config = {
             "data_loader": {
@@ -59,11 +59,13 @@ class RemovePunctuation(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.debug("Remove Punctuation Step")
-            remove_punctuation = str.maketrans('', '', punctuation)
+            self._log.debug("Remove Punctuation Step")
+            remove_punctuation = str.maketrans(
+                punctuation, ' '*len(punctuation)
+            )
             item["data"] = item["data"].translate(remove_punctuation)
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error removing punctuation from item id:{} - {}".format(
                     item["id"],
                     e

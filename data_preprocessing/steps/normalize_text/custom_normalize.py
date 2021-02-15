@@ -20,8 +20,7 @@ Example:
 
         config = {
             "data_loader": {
-                "type": "list",
-                "batch_size": 10
+                "type": "single_item",
             },
             "steps": [
                 {
@@ -43,18 +42,16 @@ Example:
             ]
         }
 
-
         process = DataPreprocess(config)
-        data = ["LIST of sentences TO CleAn"]
-        for batch in process.process_data(data):
-            pass
+        data = "sentences TO CleAn!"
+        data = process.process_item(data):
 """
 import importlib
 from data_preprocessing.steps.base import Steps
 
 
 class CustomNormalize(Steps):
-    """ Debugger step class.
+    """Debugger step class.
 
     Args:
         config (json): Json object containing the configuration details
@@ -86,10 +83,10 @@ class CustomNormalize(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.debug("Custom Step")
+            self._log.debug("Custom Step")
             item = self.custom_module.process(item)
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error debugging (item id:{}) - {}".format(
                     item["id"],
                     e

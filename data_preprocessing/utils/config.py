@@ -33,7 +33,8 @@ DATA_LOADER = {
         "file_path": "str",
         "columns": {}
     },
-    "list": {}
+    "list": {},
+    "single_item": {}
 }
 PERMITTED_STEPS = {
     "steps": {
@@ -48,6 +49,7 @@ PERMITTED_STEPS = {
                 "expand_contractions",
                 "remove_html",
                 "porter_stemmer",
+                "snowball_stemmer",
                 "lemmatizer",
                 "debugger_step",
                 "expand_contractions",
@@ -61,6 +63,7 @@ STEP_ORDER = {
     "remove_html": [
         "remove_punctuation",
         "porter_stemmer",
+        "snowball_stemmer",
         "lemmatizer"
     ],
     "remove_urls": [
@@ -125,6 +128,12 @@ def validate_config(config, log_level="INFO"):
                     b=config_type
                 )
             )
+    # Preserve orginal data, default it is off
+    check_preserve = check_data_loader.get("preserve_original")
+    if check_preserve:
+        config["data_loader"]["preserve_original"] = True
+    else:
+        config["data_loader"]["preserve_original"] = False
 
     # If the batch size is not set, add the default batch size of 10
     check_data_batch = check_data_loader.get("batch_size")
@@ -140,6 +149,18 @@ def validate_config(config, log_level="INFO"):
     # Set the log level
     if not config["data_loader"].get("log_level"):
         config["data_loader"]["log_level"] = log_level
+
+    # Set the tokenizer to the default if not configured
+    if not config.get("tokenizer"):
+        default_tokenizer = {
+            "type": "nltk_regex",
+            "name": "tokenizer",
+            "log_level": log_level
+        }
+        config["tokenizer"] = default_tokenizer
+
+    if not config["tokenizer"].get("log_level"):
+        config["tokenizer"]["log_level"] = log_level
 
     steps_validated = []
     if config.get("steps"):
@@ -172,6 +193,34 @@ def validate_config(config, log_level="INFO"):
                         step_name
                     )
                 )
+            # Snowball Stemmer can accept options - default is english
+            if step_type == "snowball_stemmer":
+                options = step.get("options", "english")
+                supported_lang = [
+                    "arabic",
+                    "danish",
+                    "dutch",
+                    "english",
+                    "finnish",
+                    "french",
+                    "german",
+                    "hungarian",
+                    "italian",
+                    "norwegian",
+                    "porter",
+                    "portuguese",
+                    "romanian",
+                    "russian",
+                    "spanish",
+                    "swedish"
+                ]
+                if options not in supported_lang:
+                    raise ValueError(
+                        "This is not a supported language, please use choose "
+                        "from the supported languages: {}".format(
+                            supported_lang
+                        )
+                    )
 
             # Remove stopwords can accept options - default is short_list
             if step_type == "remove_stopwords":

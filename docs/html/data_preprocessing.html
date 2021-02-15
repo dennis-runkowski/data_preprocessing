@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>DataPreprocess &mdash; Data Preprocessing 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tokenizer" href="data_preprocessing.steps.html" />
+    <link rel="prev" title="Install the Data Preprocessing library" href="INSTALL.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Data Preprocessing
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Home</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DataPreprocess</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#steps">Steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data_preprocessing.steps.html">Tokenizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preprocessing.steps.html#data-loaders">Data Loaders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preprocessing.steps.html#normalize-text">Normalize Text</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Data Preprocessing</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>DataPreprocess</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/data_preprocessing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-data_preprocessing.base">
+<span id="datapreprocess"></span><h1>DataPreprocess<a class="headerlink" href="#module-data_preprocessing.base" title="Permalink to this headline">¶</a></h1>
+<p>Base Class to process data through the pipeline.</p>
+<p>The DataPreprocess class is used to process your data through a list of steps.
+You must pass in a config object that contains a valid data loader and a list
+of processing steps. Each record is converted into our item mode, which is a
+dictionary with an unique id and the raw data.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+    <span class="p">}]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;Sentences To Clean&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.base.DataPreprocess">
+<em class="property">class </em><code class="sig-name descname">DataPreprocess</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em>, <em class="sig-param"><span class="n">log_level</span><span class="o">=</span><span class="default_value">'INFO'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.base.DataPreprocess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load data and process through pipeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<em>obj</em>) – Config is a json object</p></li>
+<li><p><strong>log_level</strong> (<em>str</em>) – Set the log level, default is INFO</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="data_preprocessing.base.DataPreprocess.disconnect">
+<code class="sig-name descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.base.DataPreprocess.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get the stats of processing.</p>
+<p>This should be called after the data is processed.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+    <span class="p">}]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataProcess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;List Of Sentences To Clean&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">pass</span>
+<span class="n">process</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="data_preprocessing.base.DataPreprocess.multiprocess_data">
+<code class="sig-name descname">multiprocess_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">workers</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.base.DataPreprocess.multiprocess_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator that uses multiprocessing to process data.</p>
+<p>The Data arg is only used when loading in memory data like a list. The
+processed data will be streamed in batches. The size is defined in the
+data loader configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>obj</em>) – Dictionary with items to process</p></li>
+<li><p><strong>workers</strong> (<em>int</em>) – Number of workers for processing</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>dict</em> – Process Item</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+    <span class="p">}]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataProcess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;List Of Sentences To Clean&quot;</span><span class="p">]</span>
+<span class="n">processed_data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">multiprocess_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">processed_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="data_preprocessing.base.DataPreprocess.process_data">
+<code class="sig-name descname">process_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.base.DataPreprocess.process_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator to process data through the defined pipeline.</p>
+<p>The Data arg is only used when loading in memory data like a list. The
+processed data will be streamed in batches. The size is defined in the
+data loader configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>obj</em>) – Dictionary with items to process</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>obj</em> – List of processed items</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+    <span class="p">}]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataProcess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;List Of Sentences To Clean&quot;</span><span class="p">]</span>
+<span class="n">processed_data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">processed_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="data_preprocessing.base.DataPreprocess.process_item">
+<code class="sig-name descname">process_item</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.base.DataPreprocess.process_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to process single item through the defined pipeline.</p>
+<p>You must pass the data into this method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>obj</em>) – Dictionary with items to process</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>processed item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>obj</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+    <span class="p">}]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataProcess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;Sentences To Clean.&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data_preprocessing.steps.html">Tokenizer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.tokenizer.html">NLTK Regex Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.tokenizer.html#module-data_preprocessing.steps.tokenizer.nltk_word_tokenize">NLTK Word Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.tokenizer.html#module-data_preprocessing.steps.tokenizer.spaces">Spaces Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.tokenizer.html#module-data_preprocessing.steps.tokenizer.spacy_word_tokenize">Spacy Word Tokenizer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data_preprocessing.steps.html#data-loaders">Data Loaders</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.data_loaders.html">CSV Data Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.data_loaders.html#module-data_preprocessing.steps.data_loaders.list_loader">List Data Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.data_loaders.html#module-data_preprocessing.steps.data_loaders.single_item">Single Item Loader</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data_preprocessing.steps.html#normalize-text">Normalize Text</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html">Custom Normalize Text Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.debugger_step">Debugger Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.expand_contractions">Expand Contractions Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.lemmatizer">Lemmatizer Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.lowercase">Lowercase Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.porter_stemmer">Porter Stemmer Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.snowball_stemmer">Snowball Stemmer Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.remove_digits">Remove Digits Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.remove_html">Remove Html Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.remove_punctuation">Remove Punctuation Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.remove_stopwords">Remove Stopwords Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.remove_whitespace">Remove Whitespace Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing.steps.normalize_text.html#module-data_preprocessing.steps.normalize_text.remove_urls">Remove Urls Step</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data_preprocessing.steps.html" class="btn btn-neutral float-right" title="Tokenizer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="INSTALL.html" class="btn btn-neutral float-left" title="Install the Data Preprocessing library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Dennis Runkowski
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

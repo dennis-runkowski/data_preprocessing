@@ -6,7 +6,7 @@ type must be set to `porter_stemmer`.
 Example:
     .. code-block::
 
-        from data_preprocessing.base import DataPreprocess
+        from data_preprocessing import DataPreprocess
 
         config = {
             "data_loader": {
@@ -31,7 +31,7 @@ from nltk.tokenize.regexp import regexp_tokenize
 from data_preprocessing.steps.base import Steps
 
 
-class Stemmer(Steps):
+class NLTKPorterStemmer(Steps):
     """Porter Stemmer step class.
 
     Args:
@@ -49,7 +49,7 @@ class Stemmer(Steps):
     """
     def __init__(self, config):
         super().__init__(config)
-        self.porter_stemmer = PorterStemmer()
+        self._porter_stemmer = PorterStemmer()
 
     def process(self, item):
         """Process Item - Stem words into their root word.
@@ -60,12 +60,13 @@ class Stemmer(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.debug("Porter Stemmer Step")
-            text = regexp_tokenize(item["data"], pattern="\s+", gaps=True)
-            text = " ".join([self.porter_stemmer.stem(w) for w in text])
-            item["data"] = text
+            self._log.debug("Porter Stemmer Step")
+            item = self._tokenizer.process(item)
+            item["data"] = " ".join(
+                [self._porter_stemmer.stem(w) for w in item["data"]]
+            )
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error stemming from item id:{} - {}".format(
                     item["id"],
                     e

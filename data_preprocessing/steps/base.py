@@ -18,11 +18,17 @@ class Steps:
     """
     def __init__(self, config):
         """Initialize steps base class."""
-        self.config = config
-        self.log = self._logger()
-        self.log.info("Initializing {} step".format(config.get('type')))
+        self._config = config
+        self._log = self._logger()
+        if self._config.get("name") != "tokenizer":
+            self._tokenizer = self._config["tokenizer"]
+        self._log.info("Initializing {} {}".format(
+            config.get('type'),
+            config.get('name')
+            )
+        )
 
-    def item_model(self, item):
+    def _item_model(self, item):
         """Format each record into a standard item format.
 
         Each incoming record needs to be converted into the item model. The
@@ -32,33 +38,17 @@ class Steps:
             item (dict): Dictionary containing the data
         Returns:
             dict: Containing the proper item format
-
-        Example:
-            .. code-block::
-
-                from data_preprocessing.steps.base import Steps
-
-                config = {
-                    "name": "normalize_text",
-                    "type": "lowercase",
-                    "log_level": "DEBUG"
-                }
-                step = Steps(config)
-
-                record = "this is a test"
-                record = step.item_model(record)
-                print(record)
         """
         if isinstance(item, str):
             item = {
                 "data": item
             }
         if not isinstance(item, dict):
-            self.log.error("Item is not in the correct format")
+            self._log.error("Item is not in the correct format")
             return {}
 
         if "data" not in item.keys():
-            self.log.error("Item is missing the data key")
+            self._log.error("Item is missing the data key")
             return {}
 
         formatted_item = {
@@ -66,6 +56,9 @@ class Steps:
             "data": item["data"],
             "tags": {}
         }
+        if self._config["preserve_original"]:
+            formatted_item["original_data"] = item["data"]
+
         if not item.get("id"):
             formatted_item["id"] = self._create_id(item["data"])
         else:
@@ -86,7 +79,7 @@ class Steps:
     def _logger(self):
         """Helper function to setup the logger."""
         log = setup_logging(
-            self.config["type"],
-            self.config.get("log_level")
+            self._config["type"],
+            self._config.get("log_level")
         )
         return log

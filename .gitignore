@@ -6,7 +6,7 @@ data_processing_workspace.code-workspace
 testing/*
 
 # Docs
-docs/source/*
+docsrc/_build
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

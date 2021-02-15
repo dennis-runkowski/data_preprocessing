@@ -6,7 +6,7 @@ Remove whitespace from a string of text. The config type must be set to
 Example:
     .. code-block::
 
-        from data_preprocessing.base import DataPreprocess
+        from data_preprocessing import DataPreprocess
 
         config = {
             "data_loader": {
@@ -58,13 +58,13 @@ class RemoveWhiteSpace(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.debug("Remove Whitespace Step")
+            self._log.debug("Remove Whitespace Step")
             item_text = item["data"].strip()
             item_text = item_text.replace("\n", " ").replace("\r", " ")
             item_text = " ".join(item_text.split())
             item["data"] = item_text
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error removing whitespace from item id:{} - {}".format(
                     item["id"],
                     e

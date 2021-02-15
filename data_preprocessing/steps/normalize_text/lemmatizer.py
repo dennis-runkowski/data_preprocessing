@@ -50,7 +50,7 @@ class Lemmatizer(Steps):
     """
     def __init__(self, config):
         super().__init__(config)
-        self.lemmatizer = WordNetLemmatizer()
+        self._lemmatizer = WordNetLemmatizer()
 
     def process(self, item):
         """Process item - Reduce inflectional forms to a common base form.
@@ -61,12 +61,12 @@ class Lemmatizer(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.debug("Lemmatizer Step")
+            self._log.debug("Lemmatizer Step")
             text = regexp_tokenize(item["data"], pattern="\s+", gaps=True)
-            text = " ".join([self.lemmatizer.lemmatize(w) for w in text])
+            text = " ".join([self._lemmatizer.lemmatize(w) for w in text])
             item["data"] = text
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error with lemmatizer on item id:{} - {}".format(
                     item["id"],
                     e

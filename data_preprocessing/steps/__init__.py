@@ -5,13 +5,14 @@ import inspect
 
 valid_steps = {
     "normalize_text": "data_preprocessing.steps.normalize_text",
+    "tokenizer": "data_preprocessing.steps.tokenizer",
     "data_loader": "data_preprocessing.steps.data_loaders"
 }
 
 
-def fetch(config):
-    """
-    Fetch the steps based on the config and return the object
+def _fetch(config):
+    """Fetch the steps based on the config and return the object.
+
     Args:
         config (obj): Object with config for steps
     Returns:
@@ -23,7 +24,7 @@ def fetch(config):
             valid_steps.get(step_name),
             "data_preprocessing"
         )
-        return module.fetch(config)
+        return module._fetch(config)
     except Exception as e:
         raise ImportError(
             "Could not load module - {}".format(e)

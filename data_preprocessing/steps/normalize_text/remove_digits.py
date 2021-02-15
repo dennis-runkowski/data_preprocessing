@@ -58,11 +58,11 @@ class RemoveDigits(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.debug("Remove Digits Step")
+            self._log.debug("Remove Digits Step")
             remove_digits = str.maketrans('', '', digits)
             item["data"] = item["data"].translate(remove_digits)
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error removing digits from item id:{} - {}".format(
                     item["id"],
                     e

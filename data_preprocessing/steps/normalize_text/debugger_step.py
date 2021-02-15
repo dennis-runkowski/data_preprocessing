@@ -69,11 +69,11 @@ class DebuggerStep(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.warning("---------------Debugger Step---------------")
-            self.log.warning(item["data"])
-            self.log.warning("--------------------End--------------------")
+            self._log.warning("---------------Debugger Step---------------")
+            self._log.warning(item["data"])
+            self._log.warning("--------------------End--------------------")
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error debugging (item id:{}) - {}".format(
                     item["id"],
                     e

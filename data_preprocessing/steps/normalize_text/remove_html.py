@@ -72,10 +72,10 @@ class RemoveHtml(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.debug("Remove HTML Step")
+            self._log.debug("Remove HTML Step")
             item["data"] = self._strip_html(item["data"])
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error removing html from item id:{} - {}".format(
                     item["id"],
                     e

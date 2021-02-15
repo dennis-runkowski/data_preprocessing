@@ -31,7 +31,11 @@ valid_types = {
     },
     "porter_stemmer": {
         "path": "data_preprocessing.steps.normalize_text.porter_stemmer",
-        "class": "Stemmer"
+        "class": "NLTKPorterStemmer"
+    },
+    "snowball_stemmer": {
+        "path": "data_preprocessing.steps.normalize_text.snowball_stemmer",
+        "class": "NLTKSnowballStemmer"
     },
     "lemmatizer": {
         "path": "data_preprocessing.steps.normalize_text.lemmatizer",
@@ -56,9 +60,9 @@ valid_types = {
 }
 
 
-def fetch(config):
-    """
-    Fetch the steps based on the config and return the object
+def _fetch(config):
+    """Fetch the steps based on the config and return the object.
+
     Args:
         config (obj): Object with config for steps
     Returns:

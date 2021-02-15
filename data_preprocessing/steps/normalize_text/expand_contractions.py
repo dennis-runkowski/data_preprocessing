@@ -65,7 +65,7 @@ class ExpandContractions(Steps):
             dict: Returns the updated item
         """
         try:
-            self.log.debug("Expand Contractions Step")
+            self._log.debug("Expand Contractions Step")
             text = regexp_tokenize(item["data"], pattern="\s+", gaps=True)  # noqa
 
             for index, word in enumerate(text):
@@ -74,7 +74,7 @@ class ExpandContractions(Steps):
 
             item["data"] = " ".join(text)
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error debugging (item id:{}) - {}".format(
                     item["id"],
                     e

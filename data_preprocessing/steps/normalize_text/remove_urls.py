@@ -51,7 +51,7 @@ class RemoveUrls(Steps):
     """
     def __init__(self, config):
         super().__init__(config)
-        self.regex = r'(?:(?:http|https):\/\/)?([-a-zA-Z0-9.]{2,256}\.[a-z]{2,4})\b(?:\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?'  # noqa
+        self._regex = r'(?:(?:http|https):\/\/)?([-a-zA-Z0-9.]{2,256}\.[a-z]{2,4})\b(?:\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?'  # noqa
 
     def process(self, item):
         """Process item - remove urls from the items data
@@ -62,13 +62,13 @@ class RemoveUrls(Steps):
             dict: Updated item
         """
         try:
-            self.log.debug("Remove Urls Step")
-            save_urls = self.config.get("save_urls", "no")
+            self._log.debug("Remove Urls Step")
+            save_urls = self._config.get("save_urls", "no")
             item_data = item["data"]
             if save_urls == "yes":
                 urls = []
                 regex_iter = re.finditer(
-                    self.regex,
+                    self._regex,
                     item_data,
                     flags=re.DOTALL | re.MULTILINE | re.IGNORECASE
                 )
@@ -79,14 +79,14 @@ class RemoveUrls(Steps):
                 item["tags"]["urls"] = urls
             else:
                 item_data = re.sub(
-                    self.regex,
+                    self._regex,
                     "",
                     item_data,
                     flags=re.DOTALL | re.MULTILINE | re.IGNORECASE
                 )
             item["data"] = item_data
         except Exception as e:
-            self.log.error(
+            self._log.error(
                 "Error removing urls from item id:{} - {}".format(
                     item["id"],
                     e
