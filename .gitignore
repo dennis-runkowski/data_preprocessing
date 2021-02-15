@@ -2,6 +2,12 @@
 data_processing_workspace.code-workspace
 .vscode*
 
+# Testing
+testing/*
+
+# Docs
+docs/source/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
