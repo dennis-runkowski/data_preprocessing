@@ -1,0 +1,1104 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Custom Normalize Text Step &mdash; Data Preprocessing 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="CSV Data Loader" href="data_preprocessing.steps.data_loaders.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Data Preprocessing
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Home</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="data_preprocessing.html">DataPreprocess</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="data_preprocessing.html#steps">Steps</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="data_preprocessing.steps.html">Tokenizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preprocessing.steps.html#data-loaders">Data Loaders</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="data_preprocessing.steps.html#normalize-text">Normalize Text</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Custom Normalize Text Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.debugger_step">Debugger Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.expand_contractions">Expand Contractions Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.lemmatizer">Lemmatizer Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.lowercase">Lowercase Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.porter_stemmer">Porter Stemmer Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.snowball_stemmer">Snowball Stemmer Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.remove_digits">Remove Digits Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.remove_html">Remove Html Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.remove_punctuation">Remove Punctuation Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.remove_stopwords">Remove Stopwords Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.remove_whitespace">Remove Whitespace Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-data_preprocessing.steps.normalize_text.remove_urls">Remove Urls Step</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Data Preprocessing</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="data_preprocessing.html">DataPreprocess</a> &raquo;</li>
+        
+          <li><a href="data_preprocessing.steps.html">Tokenizer</a> &raquo;</li>
+        
+      <li>Custom Normalize Text Step</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/data_preprocessing.steps.normalize_text.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-data_preprocessing.steps.normalize_text.custom_normalize">
+<span id="custom-normalize-text-step"></span><h1>Custom Normalize Text Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.custom_normalize" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Custom normalize step.</p>
+<p>This class is used to add a custom step to the pipeline. In order to use this
+you must create a module with a function called process that takes one argument
+for the data. The module must be in the same location you are running the
+process from. You must return the item in order for it to finish through the
+remainder of the pipeline. In your config you must add the key <cite>custom_path</cite>
+that contains the custom module location. The default module is called
+custom_step. The config type must be set to <cite>custom_normalize</cite></p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Saved in a file called custom_module.py (in the same location)</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">item</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">item</span>
+
+<span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;debugger_step&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_normalize&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;custom_module&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_module&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;debugger_step&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;sentences TO CleAn!&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.custom_normalize.CustomNormalize">
+<em class="property">class </em><code class="sig-name descname">CustomNormalize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.custom_normalize.CustomNormalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Debugger step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_normalize&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+    <span class="s2">&quot;custom_module&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_module&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.custom_normalize.CustomNormalize.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.custom_normalize.CustomNormalize.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - Custom processing step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.debugger_step">
+<span id="debugger-step"></span><h1>Debugger Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.debugger_step" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Debugger step to log the item data.</p>
+<p>This class is used to log the data of an item. This step logs the item data.
+This is useful when debugging to see the item change as it is moving through
+the steps in your pipeline. The config type must be set to <cite>debugger_step</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example: Using the pipeline</span>
+<span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;debugger_step&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;debugger_step&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;LIST of sentences TO CleAn&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.debugger_step.DebuggerStep">
+<em class="property">class </em><code class="sig-name descname">DebuggerStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.debugger_step.DebuggerStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Process item - Debugger step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;debugger_step&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.debugger_step.DebuggerStep.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.debugger_step.DebuggerStep.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Debugging step to log item text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>obj</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.expand_contractions">
+<span id="expand-contractions-step"></span><h1>Expand Contractions Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.expand_contractions" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Expand Contractions step.</p>
+<p>This class is used to expand contractions to full length. You must use the
+lowercase step prior to this step. This step requires the text to be in
+lowercase format. For example, isn’t will become is not. The config type must
+be set to <cite>expand_contractions</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;expand_contractions&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">testing_data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;can&#39;t&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">testing_data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.expand_contractions.ExpandContractions">
+<em class="property">class </em><code class="sig-name descname">ExpandContractions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.expand_contractions.ExpandContractions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Expand Contractions step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;expand_contractions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.expand_contractions.ExpandContractions.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.expand_contractions.ExpandContractions.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - Expand Contractions step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.lemmatizer">
+<span id="lemmatizer-step"></span><h1>Lemmatizer Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.lemmatizer" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Lemmatizer Step.</p>
+<p>Using the WordNetLemmatizer algorthin reduce inflectional forms to a common
+base form. For example cities becomes city. The config type must be set to
+<cite>lemmatizer</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lemmatizer&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;How many cities are in the USA.&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.lemmatizer.Lemmatizer">
+<em class="property">class </em><code class="sig-name descname">Lemmatizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.lemmatizer.Lemmatizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Lemmatizer step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lemmatizer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.lemmatizer.Lemmatizer.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.lemmatizer.Lemmatizer.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - Reduce inflectional forms to a common base form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.lowercase">
+<span id="lowercase-step"></span><h1>Lowercase Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.lowercase" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Lowercase step.</p>
+<p>Convert all the text to lowercase form. The config type must be set to
+<cite>lowercase</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;THIS IS A TEST sentence.&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.lowercase.NormalizeLowerCase">
+<em class="property">class </em><code class="sig-name descname">NormalizeLowerCase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.lowercase.NormalizeLowerCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Lowercase step class.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.lowercase.NormalizeLowerCase.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.lowercase.NormalizeLowerCase.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - Convert item data lowercase.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.porter_stemmer">
+<span id="porter-stemmer-step"></span><h1>Porter Stemmer Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.porter_stemmer" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Stem words using the PorterStemmer algorithm</p>
+<p>Stem words into their root form. For Example visting becomes visit. The config
+type must be set to <cite>porter_stemmer</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;porter_stemmer&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I am going to the mall.&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.porter_stemmer.NLTKPorterStemmer">
+<em class="property">class </em><code class="sig-name descname">NLTKPorterStemmer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.porter_stemmer.NLTKPorterStemmer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Porter Stemmer step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;porter_stemmer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.porter_stemmer.NLTKPorterStemmer.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.porter_stemmer.NLTKPorterStemmer.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process Item - Stem words into their root word.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.snowball_stemmer">
+<span id="snowball-stemmer-step"></span><h1>Snowball Stemmer Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.snowball_stemmer" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Stem words using the Snowball Stemmer algorithm</p>
+<p>From NLTK: The algorithms have been developed by Martin Porter.
+These stemmers are called Snowball, because Porter created
+a programming language with this name for creating
+new stemming algorithms. There is more information available
+at <a class="reference external" href="http://snowball.tartarus.org/">http://snowball.tartarus.org/</a></p>
+<p>Stem words into their root form. For Example visting becomes visit. The config
+type must be set to <cite>porter_stemmer</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;snowball_stemmer&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I am going to the mall.&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.snowball_stemmer.NLTKSnowballStemmer">
+<em class="property">class </em><code class="sig-name descname">NLTKSnowballStemmer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.snowball_stemmer.NLTKSnowballStemmer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Snowball Stemmer step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;porter_stemmer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="s2">&quot;english&quot;</span><span class="p">,</span> <span class="c1"># optional - english by default</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.snowball_stemmer.NLTKSnowballStemmer.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.snowball_stemmer.NLTKSnowballStemmer.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process Item - Stem words into their root word.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.remove_digits">
+<span id="remove-digits-step"></span><h1>Remove Digits Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.remove_digits" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Remove digits</p>
+<p>Remove digits from a string of text. The config type must be set to
+<cite>remove_digits</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_digits&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I have 2 dogs and 3 siblings.&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.remove_digits.RemoveDigits">
+<em class="property">class </em><code class="sig-name descname">RemoveDigits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_digits.RemoveDigits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Remove Digits step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_digits&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.remove_digits.RemoveDigits.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_digits.RemoveDigits.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - remove digits from text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.remove_html">
+<span id="remove-html-step"></span><h1>Remove Html Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.remove_html" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Remove HTML</p>
+<p>Remove all the html from the data in an item. If you use this step it must run
+before the steps <cite>remove_punctuation</cite>, <cite>porter_stemmer</cite>, <cite>lemmatizer</cite>. The
+config type must be set to <cite>remove_html</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_html&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&lt;h1&gt;Remove Html&lt;/h1&gt;&lt;p class=&quot;test&quot;&gt;This is a test.&lt;/p&gt;&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.remove_html.RemoveHtml">
+<em class="property">class </em><code class="sig-name descname">RemoveHtml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_html.RemoveHtml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Remove Html step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_html&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.remove_html.RemoveHtml.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_html.RemoveHtml.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - remove html from text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.remove_punctuation">
+<span id="remove-punctuation-step"></span><h1>Remove Punctuation Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.remove_punctuation" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Remove punctuation</p>
+<p>Remove punctuation from a string of text. This step can not run before the
+steps <cite>remove_html</cite> or <cite>remove_urls</cite>.The config type must be set to
+<cite>remove_punctuation</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_punctuation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Why am I a jets fan?&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.remove_punctuation.RemovePunctuation">
+<em class="property">class </em><code class="sig-name descname">RemovePunctuation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_punctuation.RemovePunctuation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Remove Punctuation step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_punctuation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.remove_punctuation.RemovePunctuation.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_punctuation.RemovePunctuation.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - remove punctuation from text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.remove_stopwords">
+<span id="remove-stopwords-step"></span><h1>Remove Stopwords Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.remove_stopwords" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Remove Stop Words</p>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.remove_stopwords.RemoveStopWords">
+<em class="property">class </em><code class="sig-name descname">RemoveStopWords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_stopwords.RemoveStopWords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.remove_stopwords.RemoveStopWords.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_stopwords.RemoveStopWords.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - remove stop words from text
+:param item: item
+:type item: dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>text with no stop words</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.remove_whitespace">
+<span id="remove-whitespace-step"></span><h1>Remove Whitespace Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.remove_whitespace" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Remove Whitespace</p>
+<p>Remove whitespace from a string of text. The config type must be set to
+<cite>remove_whitespace</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_whitespace&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; Remove the whitespace</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="n">of</span>   <span class="n">text</span> <span class="s2">&quot;]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.remove_whitespace.RemoveWhiteSpace">
+<em class="property">class </em><code class="sig-name descname">RemoveWhiteSpace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_whitespace.RemoveWhiteSpace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Remove Whitespace step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_whitespace&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.remove_whitespace.RemoveWhiteSpace.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_whitespace.RemoveWhiteSpace.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - remove whitespace from text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-data_preprocessing.steps.normalize_text.remove_urls">
+<span id="remove-urls-step"></span><h1>Remove Urls Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.remove_urls" title="Permalink to this headline">¶</a></h1>
+<p>Normalize Text - Remove urls from test.</p>
+<p>This class is used to remove urls from a string of text. If you are using this
+step in a pipeline it must come before the step <cite>remove_punctuation</cite>. If you
+want to remove urls, but store them as part of the item, you can set the config
+option save_urls to <cite>yes</cite>. The config type must be set to <cite>remove_urls</cite>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_urls&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;save_urls&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">testing_data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;test to remove https://google.com and www.google.com&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">testing_data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="data_preprocessing.steps.normalize_text.remove_urls.RemoveUrls">
+<em class="property">class </em><code class="sig-name descname">RemoveUrls</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_urls.RemoveUrls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Remove Urls step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_urls&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;save_urls&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span>  <span class="c1"># optional - default is no</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="data_preprocessing.steps.normalize_text.remove_urls.RemoveUrls.process">
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_urls.RemoveUrls.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process item - remove urls from the items data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="data_preprocessing.steps.data_loaders.html" class="btn btn-neutral float-left" title="CSV Data Loader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Dennis Runkowski
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
