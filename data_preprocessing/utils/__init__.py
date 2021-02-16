@@ -1,1 +1,2 @@
-from .config_template import Templates
+from .config_template import PreBuiltTemplates
+from .config_template import ConfigTemplates

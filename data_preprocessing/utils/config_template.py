@@ -2,7 +2,7 @@
 """
 
 
-class Templates:
+class PreBuiltTemplates:
     @classmethod
     def get_template(cls):
         """General Template."""
@@ -57,3 +57,51 @@ class Templates:
             ]
         }
         return config_template
+
+
+class ConfigTemplates:
+    @classmethod
+    def pipeline(cls):
+        """Pipeline template."""
+        return {
+            "tokenizer": {},
+            "data_loader": {},
+            "steps": []
+        }
+
+    @classmethod
+    def data_loader_csv_loader(cls):
+        """Data Loader CSV config."""
+        return {
+            "type": "csv",
+            "file_path": "file_name.csv",
+            "columns": {"id": "", "data": ""},
+            "batch_size": 1000,
+            "log_level": "INFO"
+        }
+
+    @classmethod
+    def data_loader_list_loader(cls):
+        """Data Loader List config."""
+        return {
+            "type": "list",
+            "batch_size": 1000,
+            "log_level": "INFO"
+        }
+
+    @classmethod
+    def data_loader_single_item_loader(cls):
+        """Data Loader Single Item config."""
+        return {
+            "type": "single_item",
+            "log_level": "INFO"
+        }
+
+    @classmethod
+    def normalize_text_lowercase(cls):
+        """Normalize Text Lowercase config."""
+        return {
+            "name": "normalize_text",
+            "type": "lowercase",
+            "log_level": "INFO"
+        }

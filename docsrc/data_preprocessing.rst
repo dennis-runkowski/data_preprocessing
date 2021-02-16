@@ -13,4 +13,11 @@ Steps
 
    data_preprocessing.steps
 
+Utils
+-------------------------------
+
+.. toctree::
+   :maxdepth: 4
+
+   data_preprocessing.utils
 

@@ -1,20 +1,20 @@
 """ Normalize Text - Custom normalize step.
 
 This class is used to add a custom step to the pipeline. In order to use this
-you must create a module with a function called process that takes one argument
-for the data. The module must be in the same location you are running the
-process from. You must return the item in order for it to finish through the
-remainder of the pipeline. In your config you must add the key `custom_path`
-that contains the custom module location. The default module is called
-custom_step. The config type must be set to `custom_normalize`
+you must create a class with a method called process that takes one argument
+for the data. You must return the item in order for it to finish through the
+remainder of the pipeline. In your config you must add the key `custom_class`
+that contains the custom class object. The config type must be set to
+`custom_normalize`
 
 Example:
     .. code-block::
 
-        # Saved in a file called custom_module.py (in the same location)
-        def process(item):
-            item['data'] = item['data'].upper()
-            return item
+        # Create a custom class with the method process
+        class CustomClass:
+            def process(self, item):
+                item['data'] = item['data'].upper()
+                return item
 
         from data_preprocessing.base import DataPreprocess
 
@@ -25,23 +25,12 @@ Example:
             "steps": [
                 {
                     "name": "normalize_text",
-                    "type": "debugger_step",
-                    "log_level": "INFO"
-                },
-                {
-                    "name": "normalize_text",
                     "type": "custom_normalize",
                     "log_level": "INFO",
-                    "custom_module": "custom_module"
-                },
-                {
-                    "name": "normalize_text",
-                    "type": "debugger_step",
-                    "log_level": "INFO"
+                    "custom_class": CustomClass()
                 }
             ]
         }
-
         process = DataPreprocess(config)
         data = "sentences TO CleAn!"
         data = process.process_item(data):
@@ -64,15 +53,12 @@ class CustomNormalize(Steps):
                 "name": "normalize_text",
                 "type": "custom_normalize",
                 "log_level": "INFO"
-                "custom_module": "custom_module"
+                "custom_class": CustomClass()
             }
     """
     def __init__(self, config):
         super().__init__(config)
-        path = config["custom_module"]
-        self.custom_module = importlib.import_module(
-            path
-        )
+        self.custom_module = config["custom_class"]
 
     def process(self, item):
         """Process item - Custom processing step.
@@ -87,7 +73,7 @@ class CustomNormalize(Steps):
             item = self.custom_module.process(item)
         except Exception as e:
             self._log.error(
-                "Error debugging (item id:{}) - {}".format(
+                "Error in custom step (item id:{}) - {}".format(
                     item["id"],
                     e
                 )

@@ -86,6 +86,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
 </ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EXAMPLES.html">Examples</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Documentation:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="data_preprocessing.html">DataPreprocess</a></li>
@@ -159,6 +162,7 @@
  <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -171,10 +175,12 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data_preprocessing.steps.data_loaders.html#data_preprocessing.steps.data_loaders.csv_loader.CsvDataLoader">CsvDataLoader (class in data_preprocessing.steps.data_loaders.csv_loader)</a>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.ConfigTemplates">ConfigTemplates (class in data_preprocessing.utils.config_template)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_preprocessing.steps.data_loaders.html#data_preprocessing.steps.data_loaders.csv_loader.CsvDataLoader">CsvDataLoader (class in data_preprocessing.steps.data_loaders.csv_loader)</a>
+</li>
       <li><a href="data_preprocessing.steps.normalize_text.html#data_preprocessing.steps.normalize_text.custom_normalize.CustomNormalize">CustomNormalize (class in data_preprocessing.steps.normalize_text.custom_normalize)</a>
 </li>
   </ul></td>
@@ -183,6 +189,12 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.ConfigTemplates.data_loader_csv_loader">data_loader_csv_loader() (ConfigTemplates class method)</a>
+</li>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.ConfigTemplates.data_loader_list_loader">data_loader_list_loader() (ConfigTemplates class method)</a>
+</li>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.ConfigTemplates.data_loader_single_item_loader">data_loader_single_item_loader() (ConfigTemplates class method)</a>
+</li>
       <li>
     data_preprocessing.base
 
@@ -332,6 +344,13 @@
         <li><a href="data_preprocessing.steps.tokenizer.html#module-data_preprocessing.steps.tokenizer.spacy_word_tokenize">module</a>
 </li>
       </ul></li>
+      <li>
+    data_preprocessing.utils.config_template
+
+      <ul>
+        <li><a href="data_preprocessing.utils.html#module-data_preprocessing.utils.config_template">module</a>
+</li>
+      </ul></li>
       <li><a href="data_preprocessing.html#data_preprocessing.base.DataPreprocess">DataPreprocess (class in data_preprocessing.base)</a>
 </li>
       <li><a href="data_preprocessing.steps.normalize_text.html#data_preprocessing.steps.normalize_text.debugger_step.DebuggerStep">DebuggerStep (class in data_preprocessing.steps.normalize_text.debugger_step)</a>
@@ -345,6 +364,20 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="data_preprocessing.steps.normalize_text.html#data_preprocessing.steps.normalize_text.expand_contractions.ExpandContractions">ExpandContractions (class in data_preprocessing.steps.normalize_text.expand_contractions)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.PreBuiltTemplates.get_template">get_template() (PreBuiltTemplates class method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.PreBuiltTemplates.get_template_csv">get_template_csv() (PreBuiltTemplates class method)</a>
+</li>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.PreBuiltTemplates.get_template_single">get_template_single() (PreBuiltTemplates class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -410,6 +443,8 @@
 </li>
         <li><a href="data_preprocessing.steps.tokenizer.html#module-data_preprocessing.steps.tokenizer.spacy_word_tokenize">data_preprocessing.steps.tokenizer.spacy_word_tokenize</a>
 </li>
+        <li><a href="data_preprocessing.utils.html#module-data_preprocessing.utils.config_template">data_preprocessing.utils.config_template</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -423,9 +458,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="data_preprocessing.steps.normalize_text.html#data_preprocessing.steps.normalize_text.porter_stemmer.NLTKPorterStemmer">NLTKPorterStemmer (class in data_preprocessing.steps.normalize_text.porter_stemmer)</a>
 </li>
+      <li><a href="data_preprocessing.steps.normalize_text.html#data_preprocessing.steps.normalize_text.snowball_stemmer.NLTKSnowballStemmer">NLTKSnowballStemmer (class in data_preprocessing.steps.normalize_text.snowball_stemmer)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data_preprocessing.steps.normalize_text.html#data_preprocessing.steps.normalize_text.snowball_stemmer.NLTKSnowballStemmer">NLTKSnowballStemmer (class in data_preprocessing.steps.normalize_text.snowball_stemmer)</a>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.ConfigTemplates.normalize_text_lowercase">normalize_text_lowercase() (ConfigTemplates class method)</a>
 </li>
       <li><a href="data_preprocessing.steps.normalize_text.html#data_preprocessing.steps.normalize_text.lowercase.NormalizeLowerCase">NormalizeLowerCase (class in data_preprocessing.steps.normalize_text.lowercase)</a>
 </li>
@@ -435,6 +472,10 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.ConfigTemplates.pipeline">pipeline() (ConfigTemplates class method)</a>
+</li>
+      <li><a href="data_preprocessing.utils.html#data_preprocessing.utils.config_template.PreBuiltTemplates">PreBuiltTemplates (class in data_preprocessing.utils.config_template)</a>
+</li>
       <li><a href="data_preprocessing.steps.data_loaders.html#data_preprocessing.steps.data_loaders.csv_loader.CsvDataLoader.process">process() (CsvDataLoader method)</a>
 
       <ul>

@@ -7,8 +7,7 @@ two columns, one for the id and one for the data.
 Example:
     .. code-block::
 
-        # Example: Stand Alone
-        from data_preprocessing.steps.data_loaders import csv_loader
+        from data_preprocessing import DataPreprocess
 
         config = {
             "data_loader": {
@@ -26,18 +25,7 @@ Example:
                 },
             ]
         }
-
-        loader = csv_loader.CsvDataLoader(config["data_loader"])
-
-        for item in loader.process():
-            print(item)
-            break
-
-        # Example: Using the pipeline
-        from data_preprocessing.base import DataPreprocess
-
         loader = DataPreprocess(config, log_level='INFO')
-
         for batch in loader.process_data():
             print(batch)
             break

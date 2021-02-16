@@ -6,5 +6,10 @@ setup(
     name='data_preprocessing',
     version='0.1',
     description='Package to prepare data',
-    packages=find_packages()
+    packages=find_packages(),
+    install_requires=[
+        'nltk',
+        'spacy',
+        'pandas'
+    ]
 )
