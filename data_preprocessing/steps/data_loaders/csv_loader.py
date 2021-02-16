@@ -2,7 +2,9 @@
 
 This data loader fetches data from a csv file, formats the data to the item
 model and processes through the data preprocessing pipeline. You must include
-two columns, one for the id and one for the data.
+two columns, one for the id and one for the data. If you want to include
+additional columns in the item, you can add the `addition_columns` key with a
+list of the column names.
 
 Example:
     .. code-block::
@@ -13,7 +15,11 @@ Example:
             "data_loader": {
                 "type": "csv",
                 "file_path": "fake_job_postings.csv",
-                "columns": {"id": "job_id", "data": "description"},
+                "columns": {
+                    "id": "job_id",
+                    "data": "description",
+                    "additional_columns": ["names", "of", "columns"]
+                },
                 "batch_size": 1000,
                 "log_level": "INFO"
             },
@@ -48,13 +54,21 @@ class CsvDataLoader(Steps):
             config = {
                 "type": "csv",
                 "file_path": "fake_job_postings.csv",
-                "columns": {"id": "job_id", "data": "description"},
+                "columns": {
+                    "id": "job_id",
+                    "data": "description",
+                    "additional_columns": ["names", "of", "columns"]
+                },
                 "batch_size": 1000,
                 "log_level": "INFO"
             }
     """
     def __init__(self, config):
         super().__init__(config)
+        self._additional_columns = config["columns"].get("additional_columns")
+        if self._additional_columns:
+            if not isinstance(self._additional_columns, list):
+                raise TypeError("additional_columns must be a list")
 
     def process(self, *args):
         """Load data from a csv file.
@@ -67,6 +81,8 @@ class CsvDataLoader(Steps):
         path = self._config["file_path"]
         columns = self._config["columns"]
         column_names = [columns["id"], columns["data"]]
+        if self._additional_columns:
+            column_names += self._additional_columns
         batch_size = self._config["batch_size"]
         self._log.info(
             "Loading items from csv file - {}".format(
@@ -82,7 +98,7 @@ class CsvDataLoader(Steps):
                     if not item:
                         self._log.warn("Skipping row - {}".format(index))
                         continue
-                    yield self._item_model(item)
+                    yield self._item_model(item, self._additional_columns)
         except Exception as e:
             self._log.error("Error processing csv file")
             raise e
@@ -107,6 +123,9 @@ class CsvDataLoader(Steps):
                 "id": row[columns["id"]],
                 "data": row[columns["data"]]
             }
+            if self._additional_columns:
+                for c in self._additional_columns:
+                    item[c] = row[c]
         except Exception as e:
             self._log.warn("Error processing row in csv file {}".format(e))
             return ""

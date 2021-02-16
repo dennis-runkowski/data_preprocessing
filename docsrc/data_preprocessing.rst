@@ -5,8 +5,11 @@ DataPreprocess
    :members:
    :undoc-members:
 
+
 Steps
 -------------------------------
+
+Steps for the pipeline.
 
 .. toctree::
    :maxdepth: 4
@@ -15,6 +18,8 @@ Steps
 
 Utils
 -------------------------------
+
+Helper methods.
 
 .. toctree::
    :maxdepth: 4

@@ -191,19 +191,19 @@
 <span id="custom-normalize-text-step"></span><h1>Custom Normalize Text Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.custom_normalize" title="Permalink to this headline">¶</a></h1>
 <p>Normalize Text - Custom normalize step.</p>
 <p>This class is used to add a custom step to the pipeline. In order to use this
-you must create a module with a function called process that takes one argument
-for the data. The module must be in the same location you are running the
-process from. You must return the item in order for it to finish through the
-remainder of the pipeline. In your config you must add the key <cite>custom_path</cite>
-that contains the custom module location. The default module is called
-custom_step. The config type must be set to <cite>custom_normalize</cite></p>
+you must create a class with a method called process that takes one argument
+for the data. You must return the item in order for it to finish through the
+remainder of the pipeline. In your config you must add the key <cite>custom_class</cite>
+that contains the custom class object. The config type must be set to
+<cite>custom_normalize</cite></p>
 <p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Saved in a file called custom_module.py (in the same location)</span>
-<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-    <span class="n">item</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">item</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a custom class with the method process</span>
+<span class="k">class</span> <span class="nc">CustomClass</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">item</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">item</span>
 
-<span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -212,23 +212,12 @@ custom_step. The config type must be set to <cite>custom_normalize</cite></p>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;debugger_step&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
             <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_normalize&quot;</span><span class="p">,</span>
             <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;custom_module&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_module&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;debugger_step&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+            <span class="s2">&quot;custom_class&quot;</span><span class="p">:</span> <span class="n">CustomClass</span><span class="p">()</span>
         <span class="p">}</span>
     <span class="p">]</span>
 <span class="p">}</span>
-
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;sentences TO CleAn!&quot;</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
@@ -250,7 +239,7 @@ custom_step. The config type must be set to <cite>custom_normalize</cite></p>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
     <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_normalize&quot;</span><span class="p">,</span>
     <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
-    <span class="s2">&quot;custom_module&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_module&quot;</span>
+    <span class="s2">&quot;custom_class&quot;</span><span class="p">:</span> <span class="n">CustomClass</span><span class="p">()</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -496,7 +485,7 @@ base form. For example cities becomes city. The config type must be set to
 <p>Convert all the text to lowercase form. The config type must be set to
 <cite>lowercase</cite>.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>

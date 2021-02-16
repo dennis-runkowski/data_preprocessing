@@ -5,12 +5,18 @@ from data_preprocessing.steps.base import Steps
 class RemoveStopWords(Steps):
     def __init__(self, config):
         super().__init__(config)
-        if self._config.get("options") == "long_list":
+        options = self._config.get("options")
+        if options == "long_list":
             from data_preprocessing.steps.normalize_text.stop_words \
                 import STOP_WORDS_LONG
             self._stop_words = STOP_WORDS_LONG
-        elif self._config.get("options") == "custom":
-            self._stop_words = self._config.get("custom_list", [])
+        elif options == "custom":
+            custom_list = self._config.get("custom_list")
+            if not custom_list:
+                raise KeyError("Missing custom_list key")
+            if not isinstance(custom_list, list):
+                raise TypeError("custom_list must be a list of stop words")
+            self._stop_words = custom_list
         else:
             from data_preprocessing.steps.normalize_text.stop_words \
                 import STOP_WORDS

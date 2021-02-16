@@ -16,7 +16,7 @@ Example:
                 item['data'] = item['data'].upper()
                 return item
 
-        from data_preprocessing.base import DataPreprocess
+        from data_preprocessing import DataPreprocess
 
         config = {
             "data_loader": {
@@ -58,6 +58,9 @@ class CustomNormalize(Steps):
     """
     def __init__(self, config):
         super().__init__(config)
+        # Custom Step needs custom_class
+        if not config.get("custom_class"):
+            raise KeyError("Missing custom_class key in config")
         self.custom_module = config["custom_class"]
 
     def process(self, item):
