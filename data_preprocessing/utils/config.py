@@ -55,7 +55,17 @@ PERMITTED_STEPS = {
                 "expand_contractions",
                 "custom_normalize",
             ]
-        }
+        },
+    }
+}
+PERMITTED_TOKENIZER = {
+    "tokenizer": {
+        "type": [
+            "spaces",
+            "spacy_word_tokenize",
+            "nltk_word_tokenize",
+            "nltk_regex"
+        ]
     }
 }
 # If you use the key it must run before the value
@@ -91,7 +101,22 @@ def validate_config(config, log_level="INFO"):
         The valid config object is returned. If there are errors, an error is
         raised.
     """
+    config = _check_data_loader(config, log_level)
+    config = _check_tokenizer(config, log_level)
+    config = _check_normalize_text(config, log_level)
+    return config
 
+
+def _check_data_loader(config, log_level):
+    """Check data loader config.
+
+    Args:
+        config (obj): config object
+        log_level (str): log level for each step
+    Returns:
+        The valid config object is returned. If there are errors, an error is
+        raised.
+    """
     # Check that a data loader is defined and correct
     check_data_loader = config.get("data_loader")
     if not check_data_loader:
@@ -150,18 +175,59 @@ def validate_config(config, log_level="INFO"):
     if not config["data_loader"].get("log_level"):
         config["data_loader"]["log_level"] = log_level
 
+    return config
+
+
+def _check_tokenizer(config, log_level):
+    """Check tokenizer config.
+
+    Args:
+        config (obj): config object
+        log_level (str): log level for each step
+    Returns:
+        The valid config object is returned. If there are errors, an error is
+        raised.
+    """
     # Set the tokenizer to the default if not configured
-    if not config.get("tokenizer"):
+    tokenizer = config.get("tokenizer")
+    if not tokenizer:
         default_tokenizer = {
             "type": "nltk_regex",
             "name": "tokenizer",
             "log_level": log_level
         }
         config["tokenizer"] = default_tokenizer
+    else:
+        # Check the tokenizer name
+        if tokenizer.get("name") not in PERMITTED_TOKENIZER:
+            raise KeyError("{} is not a valid name!".format(
+                    tokenizer.get("name")
+                )
+            )
+        tok_name = tokenizer["name"]
+        tok_type = tokenizer.get("type")
+        if tok_type not in PERMITTED_TOKENIZER[tok_name]["type"]:
+            raise KeyError("{} is not a valid type!".format(
+                    tok_type
+                )
+            )
 
     if not config["tokenizer"].get("log_level"):
         config["tokenizer"]["log_level"] = log_level
 
+    return config
+
+
+def _check_normalize_text(config, log_level):
+    """Check normalize text steps.
+
+    Args:
+        config (obj): config object
+        log_level (str): log level for each step
+    Returns:
+        The valid config object is returned. If there are errors, an error is
+        raised.
+    """
     steps_validated = []
     if config.get("steps"):
         # Check the steps are a list
@@ -193,54 +259,6 @@ def validate_config(config, log_level="INFO"):
                         step_name
                     )
                 )
-            # Snowball Stemmer can accept options - default is english
-            if step_type == "snowball_stemmer":
-                options = step.get("options", "english")
-                supported_lang = [
-                    "arabic",
-                    "danish",
-                    "dutch",
-                    "english",
-                    "finnish",
-                    "french",
-                    "german",
-                    "hungarian",
-                    "italian",
-                    "norwegian",
-                    "porter",
-                    "portuguese",
-                    "romanian",
-                    "russian",
-                    "spanish",
-                    "swedish"
-                ]
-                if options not in supported_lang:
-                    raise ValueError(
-                        "This is not a supported language, please use choose "
-                        "from the supported languages: {}".format(
-                            supported_lang
-                        )
-                    )
-
-            # Remove stopwords can accept options - default is short_list
-            if step_type == "remove_stopwords":
-                options = step.get("options", "short_list")
-                if options not in ["short_list", "long_list", "custom"]:
-                    raise ValueError(
-                        "The remove stopwords options can only accept "
-                        "short_list or long_list!"
-                    )
-                if options == "custom" and not step.get("custom_list"):
-                    raise KeyError(
-                        "Please add the custom list to your config with the "
-                        "custom_list key!"
-                    )
-                step["options"] = options
-
-            # Custom Step needs custom_path
-            if step_type == "custom_normalize":
-                if not step.get("custom_module"):
-                    step["custom_module"] = "custom_step"
 
             # Check to see if order matters with other steps
             steps_validated.append(step_type)

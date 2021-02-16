@@ -56,8 +56,8 @@ class NLTKSnowballStemmer(Steps):
     """
     def __init__(self, config):
         super().__init__(config)
-        # TODO langage
-        language = "english"
+        self._validate_config()
+        language = self._config["options"]
         self._snowball_stemmer = SnowballStemmer(language=language)
 
     def process(self, item):
@@ -83,3 +83,34 @@ class NLTKSnowballStemmer(Steps):
                 )
             )
         return item
+
+    def _validate_config(self):
+        """Validate Config"""
+        # Snowball Stemmer can accept options - default is english
+        options = self._config.get("options", "english")
+        supported_lang = [
+            "arabic",
+            "danish",
+            "dutch",
+            "english",
+            "finnish",
+            "french",
+            "german",
+            "hungarian",
+            "italian",
+            "norwegian",
+            "porter",
+            "portuguese",
+            "romanian",
+            "russian",
+            "spanish",
+            "swedish"
+        ]
+        if options not in supported_lang:
+            raise ValueError(
+                "This is not a supported language, please use choose "
+                "from the supported languages: {}".format(
+                    supported_lang
+                )
+            )
+        self._config["options"] = options

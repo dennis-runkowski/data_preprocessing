@@ -28,14 +28,17 @@ class Steps:
             )
         )
 
-    def _item_model(self, item):
+    def _item_model(self, item, additional_keys=None):
         """Format each record into a standard item format.
 
         Each incoming record needs to be converted into the item model. The
         item model is a dictionary with three keys, id, data and tags.
 
+        You can extend the item with the additional_keys arg.
+
         Args:
             item (dict): Dictionary containing the data
+            additional_keys (list): Optional additional keys to add to the item
         Returns:
             dict: Containing the proper item format
         """
@@ -43,7 +46,7 @@ class Steps:
             item = {
                 "data": item
             }
-        if not isinstance(item, dict):
+        elif not isinstance(item, dict):
             self._log.error("Item is not in the correct format")
             return {}
 
@@ -56,6 +59,11 @@ class Steps:
             "data": item["data"],
             "tags": {}
         }
+        if additional_keys:
+            formatted_item["additional_keys"] = {}
+            for key in additional_keys:
+                formatted_item["additional_keys"][key] = item.get(key, "")
+
         if self._config["preserve_original"]:
             formatted_item["original_data"] = item["data"]
 

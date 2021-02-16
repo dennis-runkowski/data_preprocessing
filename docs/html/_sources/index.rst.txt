@@ -17,6 +17,11 @@ Welcome to Data Preprocessing's documentation!
    Installation <INSTALL.md>
 
 .. toctree::
+   :maxdepth: 1
+
+   Examples <EXAMPLES.md>
+
+.. toctree::
    :maxdepth: 4
    :caption: Documentation:
 

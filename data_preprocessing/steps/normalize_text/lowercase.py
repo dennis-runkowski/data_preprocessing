@@ -6,7 +6,7 @@ Convert all the text to lowercase form. The config type must be set to
 Example:
     .. code-block::
 
-        from data_preprocessing.base import DataPreprocess
+        from data_preprocessing import DataPreprocess
 
         config = {
             "data_loader": {
