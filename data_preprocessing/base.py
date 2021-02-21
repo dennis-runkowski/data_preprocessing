@@ -63,7 +63,6 @@ class DataPreprocess():
 
         # Start time
         self._start_time = time.time()
-        self._items_processed = 0
 
     def process_item(self, data):
         """Method to process single item through the defined pipeline.
@@ -93,8 +92,10 @@ class DataPreprocess():
                 data = "Sentences To Clean."
                 data = process.process_item(data)
         """
+        self._items_processed = 0
         data = self._data_loader.process(data)
         data = self._process_steps(data)
+        self._items_processed += 1
         return data
 
     def process_data(self, data=None):
@@ -130,6 +131,7 @@ class DataPreprocess():
                 for batch in process.process_data(data):
                     processed_data.update(batch)
         """
+        self._items_processed = 0
         if self._config["data_loader"]["type"] == "single_item":
             self._log.warn(
                 "Please use the method `process_item`"
@@ -191,6 +193,8 @@ class DataPreprocess():
                 for batch in process.multiprocess_data(data, workers=4):
                     processed_data.update(batch)
         """
+        self._items_processed = 0
+        
         if self._config["data_loader"]["type"] == "single_item":
             self._log.warn(
                 "Please use the method `process_item`"
@@ -225,6 +229,7 @@ class DataPreprocess():
         #     yield self.kafka_queue.get()
         # self._log.info(self._items_processed)
         # self._log.info(self.kafka_queue.qsize())
+        self._log.info(self._items_processed)
         for item in range(0, self._items_processed):
             yield self.kafka_queue.get()
 

@@ -21,15 +21,29 @@ class PreBuiltTemplates:
         return config_template
 
     @classmethod
-    def get_template_csv(cls):
+    def get_template_csv(cls, **kwargs):
         """CSV Template"""
+        file_path = ""
+        columns = {"id": "id", "data": "description"}
+        batch_size = 1000
+        log_level = "INFO"
+
+        if kwargs.get("file_path"):
+            file_path = kwargs["file_path"]
+        if kwargs.get("columns"):
+            columns = kwargs["columns"]
+        if kwargs.get("batch_size"):
+            batch_size = kwargs["batch_size"]
+        if kwargs.get("log_level"):
+            log_level = kwargs["log_level"]
+
         config_template_csv = {
             "data_loader": {
                 "type": "csv",
-                "file_path": "test.csv",
-                "columns": {"id": "id_column", "data": "description"},
-                "batch_size": 1000,
-                "log_level": "INFO"
+                "file_path": file_path,
+                "columns": columns,
+                "batch_size": batch_size,
+                "log_level": log_level
             },
             "steps": [
                 {
@@ -70,14 +84,28 @@ class ConfigTemplates:
         }
 
     @classmethod
-    def data_loader_csv_loader(cls):
+    def data_loader_csv_loader(cls, **kwargs):
         """Data Loader CSV config."""
+        file_path = ""
+        columns = {"id": "id", "data": "description"}
+        batch_size = 1000
+        log_level = "INFO"
+
+        if kwargs.get("file_path"):
+            file_path = kwargs["file_path"]
+        if kwargs.get("columns"):
+            columns = kwargs["columns"]
+        if kwargs.get("batch_size"):
+            batch_size = kwargs["batch_size"]
+        if kwargs.get("log_level"):
+            log_level = kwargs["log_level"]
+
         return {
             "type": "csv",
-            "file_path": "file_name.csv",
-            "columns": {"id": "", "data": ""},
-            "batch_size": 1000,
-            "log_level": "INFO"
+            "file_path": file_path,
+            "columns": columns,
+            "batch_size": batch_size,
+            "log_level": log_level
         }
 
     @classmethod
