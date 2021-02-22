@@ -220,7 +220,7 @@ that contains the custom class object. The config type must be set to
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;sentences TO CleAn!&quot;</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -274,7 +274,7 @@ the steps in your pipeline. The config type must be set to <cite>debugger_step</
 <span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
     <span class="p">},</span>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -296,9 +296,8 @@ the steps in your pipeline. The config type must be set to <cite>debugger_step</
     <span class="p">]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;LIST of sentences TO CleAn&quot;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="k">pass</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;sentences TO CleAn!&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -351,7 +350,7 @@ be set to <cite>expand_contractions</cite>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing.base</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
     <span class="p">},</span>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -368,9 +367,8 @@ be set to <cite>expand_contractions</cite>.</p>
     <span class="p">]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">testing_data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;can&#39;t&quot;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">testing_data</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;I can&#39;t go to work.&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -423,7 +421,7 @@ base form. For example cities becomes city. The config type must be set to
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
     <span class="p">},</span>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -435,9 +433,8 @@ base form. For example cities becomes city. The config type must be set to
     <span class="p">]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;How many cities are in the USA.&quot;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;How many cities are in the USA.&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -489,7 +486,7 @@ base form. For example cities becomes city. The config type must be set to
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
     <span class="p">},</span>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -501,9 +498,8 @@ base form. For example cities becomes city. The config type must be set to
     <span class="p">]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;THIS IS A TEST sentence.&quot;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;sentences TO CleAn!&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -550,7 +546,7 @@ type must be set to <cite>porter_stemmer</cite>.</p>
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
     <span class="p">},</span>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -562,9 +558,8 @@ type must be set to <cite>porter_stemmer</cite>.</p>
     <span class="p">]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I am going to the mall.&quot;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;sentences TO CleAn!&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -688,7 +683,7 @@ type must be set to <cite>porter_stemmer</cite>.</p>
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
     <span class="p">},</span>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -700,9 +695,8 @@ type must be set to <cite>porter_stemmer</cite>.</p>
     <span class="p">]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I have 2 dogs and 3 siblings.&quot;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;The year is 2021&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -755,7 +749,7 @@ config type must be set to <cite>remove_html</cite>.</p>
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
     <span class="p">},</span>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -767,9 +761,8 @@ config type must be set to <cite>remove_html</cite>.</p>
     <span class="p">]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&lt;h1&gt;Remove Html&lt;/h1&gt;&lt;p class=&quot;test&quot;&gt;This is a test.&lt;/p&gt;&#39;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;&lt;h1&gt;Remove Html&lt;/h1&gt;&lt;p class=&quot;test&quot;&gt;This is a test.&lt;/p&gt;&#39;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -822,7 +815,7 @@ steps <cite>remove_html</cite> or <cite>remove_urls</cite>.The config type must 
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
     <span class="p">},</span>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -834,9 +827,8 @@ steps <cite>remove_html</cite> or <cite>remove_urls</cite>.The config type must 
     <span class="p">]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Why am I a jets fan?&quot;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;sentences TO CleAn!&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -880,23 +872,71 @@ steps <cite>remove_html</cite> or <cite>remove_urls</cite>.The config type must 
 </div>
 <div class="section" id="module-data_preprocessing.steps.normalize_text.remove_stopwords">
 <span id="remove-stopwords-step"></span><h1>Remove Stopwords Step<a class="headerlink" href="#module-data_preprocessing.steps.normalize_text.remove_stopwords" title="Permalink to this headline">¶</a></h1>
-<p>Normalize Text - Remove Stop Words</p>
+<p>Normalize Text - Remove stop words</p>
+<p>Remove stop words from a string of text. The lowercase step must be run before
+this step to prevent duplicate processing. The config type must be set to
+<cite>remove_stopwords</cite>. You can use the options argument to use the short, long or
+a custom list of stop words. The default is the short list.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">DataPreprocess</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lowercase&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_stopwords&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="s2">&quot;long_list&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;sentences TO CleAn with some stop words!&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="py class">
 <dt id="data_preprocessing.steps.normalize_text.remove_stopwords.RemoveStopWords">
 <em class="property">class </em><code class="sig-name descname">RemoveStopWords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_stopwords.RemoveStopWords" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">data_preprocessing.steps.base.Steps</span></code></p>
+<p>Remove Stopwords step class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>json</em>) – Json object containing the configuration details</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># config for usage</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;normalize_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_stopwords&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="s2">&quot;long_list&quot;</span><span class="p">,</span>  <span class="c1"># optional</span>
+    <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <dl class="py method">
 <dt id="data_preprocessing.steps.normalize_text.remove_stopwords.RemoveStopWords.process">
 <code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_preprocessing.steps.normalize_text.remove_stopwords.RemoveStopWords.process" title="Permalink to this definition">¶</a></dt>
-<dd><p>Process item - remove stop words from text
-:param item: item
-:type item: dict</p>
+<dd><p>Process item - remove stop words from text</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>text with no stop words</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – item</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the updated item</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -914,7 +954,7 @@ steps <cite>remove_html</cite> or <cite>remove_urls</cite>.The config type must 
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;single_item&quot;</span><span class="p">,</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">10</span>
     <span class="p">},</span>
     <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -926,10 +966,8 @@ steps <cite>remove_html</cite> or <cite>remove_urls</cite>.The config type must 
     <span class="p">]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataPreprocess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; Remove the whitespace</span>
-<span class="kn">from</span> <span class="nn">string</span> <span class="n">of</span>   <span class="n">text</span> <span class="s2">&quot;]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;  sentences TO     CleAn!   &quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py class">

@@ -194,7 +194,6 @@ class DataPreprocess():
                     processed_data.update(batch)
         """
         self._items_processed = 0
-        
         if self._config["data_loader"]["type"] == "single_item":
             self._log.warn(
                 "Please use the method `process_item`"
@@ -220,18 +219,22 @@ class DataPreprocess():
         )
         if data:
             self._log.info("Processing {} items".format(len(data)))
+
+        # self.kafka_queue.qsize() causes issues on a mac
+        counter = 0
         for item in self._data_loader.process(data):
             self._items_processed += 1
+            counter += 1
             self.queue.put(item)
+            if counter == self._batch_size:
+                for item in range(0, counter):
+                    yield self.kafka_queue.get()
+                counter = 0
 
         self.queue.join()
-        # for item in range(0, self.kafka_queue.qsize()):
-        #     yield self.kafka_queue.get()
-        # self._log.info(self._items_processed)
-        # self._log.info(self.kafka_queue.qsize())
-        self._log.info(self._items_processed)
-        for item in range(0, self._items_processed):
-            yield self.kafka_queue.get()
+        if counter:
+            for item in range(0, counter):
+                yield self.kafka_queue.get()
 
     def disconnect(self):
         """Method to get the stats of processing.
@@ -254,7 +257,7 @@ class DataPreprocess():
                     }]
                 }
                 process = DataProcess(config)
-                data = ["List Of Sentences To Clean"]
+                data = ["List Of Sentences To Clean", "another senteNce!"]
                 for batch in process.process_data(data):
                     pass
                 process.disconnect()

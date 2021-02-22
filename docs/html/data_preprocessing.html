@@ -228,7 +228,7 @@ dictionary with an unique id and the raw data.</p>
     <span class="p">}]</span>
 <span class="p">}</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">DataProcess</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;List Of Sentences To Clean&quot;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;List Of Sentences To Clean&quot;</span><span class="p">,</span> <span class="s2">&quot;another senteNce!&quot;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="k">pass</span>
 <span class="n">process</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
