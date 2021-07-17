@@ -99,6 +99,7 @@ class ConfigTemplates:
         columns = {"id": "id", "data": "description"}
         batch_size = 1000
         log_level = "INFO"
+        preserve_original = False
 
         if kwargs.get("file_path"):
             file_path = kwargs["file_path"]
@@ -108,13 +109,16 @@ class ConfigTemplates:
             batch_size = kwargs["batch_size"]
         if kwargs.get("log_level"):
             log_level = kwargs["log_level"]
+        if kwargs.get("preserve_original"):
+            preserve_original = kwargs["preserve_original"]
 
         return {
             "type": "csv",
             "file_path": file_path,
             "columns": columns,
             "batch_size": batch_size,
-            "log_level": log_level
+            "log_level": log_level,
+            "preserve_original": preserve_original
         }
 
     @classmethod
@@ -128,15 +132,20 @@ class ConfigTemplates:
         """
         batch_size = 1000
         log_level = "INFO"
+        preserve_original = False
 
         if kwargs.get("batch_size"):
             batch_size = kwargs["batch_size"]
         if kwargs.get("log_level"):
             log_level = kwargs["log_level"]
+        if kwargs.get("preserve_original"):
+            preserve_original = kwargs["preserve_original"]
+
         return {
             "type": "list",
             "batch_size": batch_size,
-            "log_level": log_level
+            "log_level": log_level,
+            "preserve_original": preserve_original
         }
 
     @classmethod
@@ -149,11 +158,17 @@ class ConfigTemplates:
             obj: single item config object
         """
         log_level = "INFO"
+        preserve_original = False
+
         if kwargs.get("log_level"):
             log_level = kwargs["log_level"]
+        if kwargs.get("preserve_original"):
+            preserve_original = kwargs["preserve_original"]
+
         return {
             "type": "single_item",
-            "log_level": log_level
+            "log_level": log_level,
+            "preserve_original": preserve_original
         }
 
     @classmethod
@@ -280,10 +295,14 @@ class ConfigTemplates:
         log_level = "INFO"
         if kwargs.get("log_level"):
             log_level = kwargs["log_level"]
+        options = "english"
+        if kwargs.get("options"):
+            options = kwargs["options"]
         return {
             "name": "normalize_text",
             "type": "snowball_stemmer",
-            "log_level": log_level
+            "log_level": log_level,
+            "options": options
         }
 
     @classmethod
