@@ -38,7 +38,6 @@ Example:
             break
 
 """
-import csv
 import pandas as pd
 from data_preprocessing.steps.base import Steps
 
@@ -92,6 +91,7 @@ class CsvDataLoader(Steps):
             )
         )
         try:
+            # TODO - look into using dask for large files
             for batch in pd.read_csv(
                     path, usecols=column_names, chunksize=batch_size):
 
