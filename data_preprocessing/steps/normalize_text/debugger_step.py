@@ -11,7 +11,7 @@ Example:
         from data_preprocessing.base import DataPreprocess
         config = {
             "data_loader": {
-                "type": "list",
+                "type": "single_item",
                 "batch_size": 10
             },
             "steps": [
@@ -33,9 +33,8 @@ Example:
             ]
         }
         process = DataPreprocess(config)
-        data = ["LIST of sentences TO CleAn"]
-        for batch in process.process_data(data):
-            pass
+        data = "sentences TO CleAn!"
+        data = process.process_item(data)
 """
 
 from data_preprocessing.steps.base import Steps

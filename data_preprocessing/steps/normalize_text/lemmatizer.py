@@ -11,7 +11,7 @@ Example:
 
         config = {
             "data_loader": {
-                "type": "list",
+                "type": "single_item",
                 "batch_size": 10
             },
             "steps": [
@@ -23,9 +23,8 @@ Example:
             ]
         }
         process = DataPreprocess(config)
-        data = ["How many cities are in the USA."]
-        for batch in process.process_data(data):
-            print(batch)
+        data = "How many cities are in the USA."
+        data = process.process_item(data)
 """
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize.regexp import regexp_tokenize

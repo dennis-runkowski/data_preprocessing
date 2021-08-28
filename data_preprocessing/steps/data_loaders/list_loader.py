@@ -13,7 +13,8 @@ Example:
             "data_loader": {
                 "type": "list",
                 "batch_size": 1000,
-                "log_level": "INFO"
+                "log_level": "INFO",
+                "preserve_original": True # default is False
             },
             "steps": [
                 {

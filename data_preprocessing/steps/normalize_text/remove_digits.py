@@ -10,7 +10,7 @@ Example:
 
         config = {
             "data_loader": {
-                "type": "list",
+                "type": "single_item",
                 "batch_size": 10
             },
             "steps": [
@@ -22,9 +22,8 @@ Example:
             ]
         }
         process = DataPreprocess(config)
-        data = ["I have 2 dogs and 3 siblings."]
-        for batch in process.process_data(data):
-            print(batch)
+        data = "The year is 2021"
+        data = process.process_item(data)
 """
 from string import digits
 from data_preprocessing.steps.base import Steps

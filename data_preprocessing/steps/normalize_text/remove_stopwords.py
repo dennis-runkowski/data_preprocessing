@@ -1,8 +1,58 @@
-""" Normalize Text - Remove Stop Words """
+"""Normalize Text - Remove stop words
+
+Remove stop words from a string of text. The lowercase step must be run before
+this step to prevent duplicate processing. The config type must be set to
+`remove_stopwords`. You can use the options argument to use the short, long or
+a custom list of stop words. The default is the short list.
+
+Example:
+    .. code-block::
+
+        from data_preprocessing import DataPreprocess
+
+        config = {
+            "data_loader": {
+                "type": "single_item",
+                "batch_size": 10
+            },
+            "steps": [
+                {
+                    "name": "normalize_text",
+                    "type": "lowercase",
+                    "log_level": "INFO",
+                }
+                {
+                    "name": "normalize_text",
+                    "type": "remove_stopwords",
+                    "options": "long_list",
+                    "log_level": "INFO",
+                }
+            ]
+        }
+        process = DataPreprocess(config)
+        data = "sentences TO CleAn with some stop words!"
+        data = process.process_item(data)
+"""
 from data_preprocessing.steps.base import Steps
 
 
 class RemoveStopWords(Steps):
+    """Remove Stopwords step class.
+
+    Args:
+        config (json): Json object containing the configuration details
+
+    Example:
+        .. code-block::
+
+            # config for usage
+            config = {
+                "name": "normalize_text",
+                "type": "remove_stopwords",
+                "options": "long_list",  # optional
+                "log_level": "INFO"
+            }
+    """
     def __init__(self, config):
         super().__init__(config)
         options = self._config.get("options")
@@ -25,10 +75,11 @@ class RemoveStopWords(Steps):
     def process(self, item):
         """
         Process item - remove stop words from text
+
         Args:
             item (dict): item
         Returns:
-            str: text with no stop words
+            dict: Returns the updated item
         """
         try:
             self._log.debug("Remove Stop Words Step - using {}".format(

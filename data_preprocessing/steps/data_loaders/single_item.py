@@ -12,7 +12,8 @@ Example:
         config = {
             "data_loader": {
                 "type": "single_item",
-                "log_level": "INFO"
+                "log_level": "INFO",
+                "preserve_original": True # default is False
             },
             "steps": [
                 {
@@ -42,7 +43,8 @@ class SingleItemLoader(Steps):
 
             config = {
                 "type": "single_item",
-                "log_level": "INFO"
+                "log_level": "INFO",
+                "preserve_original": True # default is False
             }
     """
     def __init__(self, config):

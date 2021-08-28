@@ -21,7 +21,8 @@ Example:
                     "additional_columns": ["names", "of", "columns"]
                 },
                 "batch_size": 1000,
-                "log_level": "INFO"
+                "log_level": "INFO",
+                "preserve_original": True # default is False
             },
             "steps": [
                 {
@@ -60,7 +61,8 @@ class CsvDataLoader(Steps):
                     "additional_columns": ["names", "of", "columns"]
                 },
                 "batch_size": 1000,
-                "log_level": "INFO"
+                "log_level": "INFO",
+                "preserve_original": True # default is False
             }
     """
     def __init__(self, config):

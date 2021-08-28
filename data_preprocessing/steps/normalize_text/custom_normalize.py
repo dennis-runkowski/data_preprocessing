@@ -33,7 +33,7 @@ Example:
         }
         process = DataPreprocess(config)
         data = "sentences TO CleAn!"
-        data = process.process_item(data):
+        data = process.process_item(data)
 """
 import importlib
 from data_preprocessing.steps.base import Steps

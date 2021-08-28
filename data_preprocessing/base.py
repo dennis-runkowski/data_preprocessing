@@ -63,7 +63,6 @@ class DataPreprocess():
 
         # Start time
         self._start_time = time.time()
-        self._items_processed = 0
 
     def process_item(self, data):
         """Method to process single item through the defined pipeline.
@@ -93,8 +92,10 @@ class DataPreprocess():
                 data = "Sentences To Clean."
                 data = process.process_item(data)
         """
+        self._items_processed = 0
         data = self._data_loader.process(data)
         data = self._process_steps(data)
+        self._items_processed += 1
         return data
 
     def process_data(self, data=None):
@@ -130,6 +131,7 @@ class DataPreprocess():
                 for batch in process.process_data(data):
                     processed_data.update(batch)
         """
+        self._items_processed = 0
         if self._config["data_loader"]["type"] == "single_item":
             self._log.warn(
                 "Please use the method `process_item`"
@@ -191,6 +193,7 @@ class DataPreprocess():
                 for batch in process.multiprocess_data(data, workers=4):
                     processed_data.update(batch)
         """
+        self._items_processed = 0
         if self._config["data_loader"]["type"] == "single_item":
             self._log.warn(
                 "Please use the method `process_item`"
@@ -216,17 +219,22 @@ class DataPreprocess():
         )
         if data:
             self._log.info("Processing {} items".format(len(data)))
+
+        # self.kafka_queue.qsize() causes issues on a mac
+        counter = 0
         for item in self._data_loader.process(data):
             self._items_processed += 1
+            counter += 1
             self.queue.put(item)
+            if counter == self._batch_size:
+                for item in range(0, counter):
+                    yield self.kafka_queue.get()
+                counter = 0
 
         self.queue.join()
-        # for item in range(0, self.kafka_queue.qsize()):
-        #     yield self.kafka_queue.get()
-        # self._log.info(self._items_processed)
-        # self._log.info(self.kafka_queue.qsize())
-        for item in range(0, self._items_processed):
-            yield self.kafka_queue.get()
+        if counter:
+            for item in range(0, counter):
+                yield self.kafka_queue.get()
 
     def disconnect(self):
         """Method to get the stats of processing.
@@ -249,7 +257,7 @@ class DataPreprocess():
                     }]
                 }
                 process = DataProcess(config)
-                data = ["List Of Sentences To Clean"]
+                data = ["List Of Sentences To Clean", "another senteNce!"]
                 for batch in process.process_data(data):
                     pass
                 process.disconnect()

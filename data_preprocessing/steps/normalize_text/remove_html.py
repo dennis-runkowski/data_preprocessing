@@ -11,7 +11,7 @@ Example:
 
         config = {
             "data_loader": {
-                "type": "list",
+                "type": "single_item",
                 "batch_size": 10
             },
             "steps": [
@@ -23,9 +23,8 @@ Example:
             ]
         }
         process = DataPreprocess(config)
-        data = ['<h1>Remove Html</h1><p class="test">This is a test.</p>']
-        for batch in process.process_data(data):
-            print(batch)
+        data = '<h1>Remove Html</h1><p class="test">This is a test.</p>'
+        data = process.process_item(data)
 """
 from html.parser import HTMLParser
 from data_preprocessing.steps.base import Steps

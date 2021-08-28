@@ -10,7 +10,7 @@ Example:
 
         config = {
             "data_loader": {
-                "type": "list",
+                "type": "single_item",
                 "batch_size": 10
             },
             "steps": [
@@ -22,9 +22,8 @@ Example:
             ]
         }
         process = DataPreprocess(config)
-        data = [" Remove the whitespace  \n        from string of   text "]
-        for batch in process.process_data(data):
-            print(batch)
+        data = "  sentences TO     CleAn!   "
+        data = process.process_item(data)
 """
 from string import whitespace
 from data_preprocessing.steps.base import Steps

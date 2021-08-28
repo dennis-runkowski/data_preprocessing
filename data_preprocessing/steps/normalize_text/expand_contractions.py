@@ -11,7 +11,7 @@ Example:
         from data_preprocessing.base import DataPreprocess
         config = {
             "data_loader": {
-                "type": "list",
+                "type": "single_item",
                 "batch_size": 10
             },
             "steps": [
@@ -28,9 +28,8 @@ Example:
             ]
         }
         process = DataPreprocess(config)
-        testing_data = ["can't"]
-        for batch in process.process_data(testing_data):
-            print(batch)
+        data = "I can't go to work."
+        data = process.process_item(data)
 """
 from data_preprocessing.steps.normalize_text.contractions import CONTRACTIONS
 from nltk.tokenize.regexp import regexp_tokenize
