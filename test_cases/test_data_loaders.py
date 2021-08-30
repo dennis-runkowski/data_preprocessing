@@ -81,7 +81,7 @@ class TestDataLoaders(unittest.TestCase):
                 "type": "csv",
                 "file_path": "test_data/test.csv",
                 "columns": {
-                    "id": "id", "data": "text", 
+                    "id": "id", "data": "text",
                     "additional_columns": ["username"]
                 },
             },
