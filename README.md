@@ -13,3 +13,7 @@ To build new documentation you must update the approriate docsrc/*.rst file and 
 ```
 make github
 ```
+
+## Areas that need improvement
+* Config validation is complex and not easy to maintain
+* Every need step add requires config validation updates
