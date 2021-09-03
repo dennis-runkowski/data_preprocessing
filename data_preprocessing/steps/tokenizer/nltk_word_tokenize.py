@@ -38,7 +38,7 @@ class TokenizeNLTKWord(Steps):
 
             # config for usage
             config = {
-                "name": "tokenize",
+                "name": "tokenizer",
                 "type": "nltk_word_tokenize",
                 "log_level": "INFO"
             }
@@ -59,7 +59,7 @@ class TokenizeNLTKWord(Steps):
             item["data"] = word_tokenize(item["data"])
         except Exception as e:
             self._log.error(
-                "Error in NLTK Regex Tokenize from item id:{} - {}".format(
+                "Error in NLTK Word Tokenize from item id:{} - {}".format(
                     item["id"],
                     e
                 )
