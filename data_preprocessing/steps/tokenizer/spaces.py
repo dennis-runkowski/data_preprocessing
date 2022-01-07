@@ -37,7 +37,7 @@ class TokenizeSpaces(Steps):
 
             # config for usage
             config = {
-                "name": "tokenize",
+                "name": "tokenizer",
                 "type": "spaces",
                 "log_level": "INFO"
             }

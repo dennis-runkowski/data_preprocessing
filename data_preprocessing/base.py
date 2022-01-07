@@ -53,7 +53,9 @@ class DataPreprocess():
 
         # Setup the tokenizer
         tokenizer = _fetch(config["tokenizer"])
-        self._config["data_loader"]["tokenizer"] = tokenizer
+
+        # Data loaders should not need tokenizers
+        # self._config["data_loader"]["tokenizer"] = tokenizer
         for step in config["steps"]:
             step["tokenizer"] = tokenizer
 

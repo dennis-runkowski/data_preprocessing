@@ -49,7 +49,15 @@ class ListDataLoader(Steps):
                 "log_level": "INFO"
             }
     """
-    def __init__(self, config):
+    def __init__(self, config=None):
+        if not config:
+            config = {
+                "name": "data_loader",
+                "type": "list",
+                "batch_size": 1000,
+                "log_level": "INFO",
+                "preserve_original": False
+            }
         super().__init__(config)
 
     def process(self, data):

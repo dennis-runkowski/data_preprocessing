@@ -38,7 +38,7 @@ class TokenizeSpacyWord(Steps):
 
             # config for usage
             config = {
-                "name": "tokenize",
+                "name": "tokenizer",
                 "type": "spacy_word_tokenize",
                 "log_level": "INFO"
             }

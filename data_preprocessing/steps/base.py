@@ -20,7 +20,7 @@ class Steps:
         """Initialize steps base class."""
         self._config = config
         self._log = self._logger()
-        if self._config.get("name") != "tokenizer":
+        if self._config.get("name") not in ["tokenizer", "data_loader"]:
             self._tokenizer = self._config["tokenizer"]
         self._log.info("Initializing {} {}".format(
             config.get('type'),

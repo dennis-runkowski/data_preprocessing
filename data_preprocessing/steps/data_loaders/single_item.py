@@ -26,7 +26,7 @@ Example:
 
         loader = DataPreprocess(config, log_level='INFO')
         test_data = "This is a TEST sentence!"
-        test_data = loader.process_item(test_data):
+        test_data = loader.process_item(test_data)
 """
 
 from data_preprocessing.steps.base import Steps
@@ -47,7 +47,15 @@ class SingleItemLoader(Steps):
                 "preserve_original": True # default is False
             }
     """
-    def __init__(self, config):
+    def __init__(self, config=None):
+        if not config:
+            # Set to default for stand alone usage with out the pipeline
+            config = {
+                "name": "data_loader",
+                "type": "single_item",
+                "log_level": "INFO",
+                "preserve_original": False
+            }
         super().__init__(config)
 
     def process(self, data):

@@ -38,7 +38,7 @@ class TokenizeNLTKRegex(Steps):
 
             # config for usage
             config = {
-                "name": "tokenize",
+                "name": "tokenizer",
                 "type": "nltk_regex",
                 "log_level": "INFO"
             }
