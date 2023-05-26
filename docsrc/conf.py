@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Data Preprocessing'
-copyright = '2021, Dennis Runkowski'
+copyright = '2023, Dennis Runkowski'
 author = 'Dennis Runkowski'
 
 # The full version, including alpha/beta/rc tags
